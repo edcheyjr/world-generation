@@ -14,6 +14,7 @@ app.get('/', async (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
 
+// Testing Html file
 app.get('/test', (req, res, next) => {
   // show the page
   const __filename = fileURLToPath(import.meta.url)
