@@ -32,10 +32,9 @@ export class Graph {
    *                               this can be use to store info telling the relations between nodes
    * @param {Points[]} points nodes / vertices / point  connected by edge/ lines / links, and can be used to
    *                          marking change in direction or magnitude or store bits of information
-   * _____________________________________________________________________________________________
    *
    * @returns {Graph} it returns a graph made of the defined Segments and Points
-   *
+   * _____________________________________________________________________________________________
    */
   constructor(segments = [], points = []) {
     this.segments = segments
