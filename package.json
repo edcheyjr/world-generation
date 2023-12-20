@@ -1,0 +1,20 @@
+{
+  "name": "part2-world-simulator",
+  "module": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "bun run ./serve.js",
+    "test": "bun run ./test.js "
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {},
+  "peerDependencies": {},
+  "author": {
+    "email": "edwinchebiikibet@gmail.com",
+    "name": "edwin chebii",
+    "url": "https://edcheyjr.vercel.app"
+  },
+  "license": "MIT"
+}
