@@ -8,7 +8,7 @@ export default class Point {
    * @param {number} y a position from 0 to canvas height
    *
    *
-   * @return { Point} a new point
+   * @return { Point} a new point object
    */
   constructor(x, y) {
     this.x = x

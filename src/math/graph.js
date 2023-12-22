@@ -1,3 +1,6 @@
+import Segment from '../primitive/segment'
+import Point from '../primitive/point'
+
 export class Graph {
   /**
    * Graph Builder G = (V, E)
@@ -28,12 +31,12 @@ export class Graph {
    *                         The edges are typically represented by straight lines connecting nodes.
    * ______________________________________________________________________________________________
    *
-   * @param {Segments[]} segments edge / lines/ segments / link connecting nodes / vertices / points
+   * @param {Segment[]} segments edge / lines/ segments / link connecting nodes / vertices / points
    *                               this can be use to store info telling the relations between nodes
-   * @param {Points[]} points nodes / vertices / point  connected by edge/ lines / links, and can be used to
+   * @param {Point[]} points nodes / vertices / point  connected by edge/ lines / links, and can be used to
    *                          marking change in direction or magnitude or store bits of information
    *
-   * @returns {Graph} it returns a graph made of the defined Segments and Points
+   * @returns {Graph} it returns a graph object made of the defined Segments and Points
    * _____________________________________________________________________________________________
    */
   constructor(segments = [], points = []) {
