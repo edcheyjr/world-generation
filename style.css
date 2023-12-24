@@ -12,3 +12,7 @@ h1 {
 #canvasOne {
   background-color: #2a5;
 }
+
+#control {
+  display: flex;
+}
