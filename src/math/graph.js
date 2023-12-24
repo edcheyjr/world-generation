@@ -1,5 +1,5 @@
 import Segment from '../primitive/segment'
-import Point from '../primitive/point'
+import Point from '../primitive/point.js'
 
 export class Graph {
   /**
@@ -44,6 +44,19 @@ export class Graph {
     this.points = points
   }
   /**
+   * @param {Point} point
+   */
+  addPoint(point) {
+    this.points.push(point)
+    // console.log(this.points)
+  }
+  /**
+   * @param {Point} point
+   */
+  containPoint(point) {
+    return this.points.find((p) => p.equals(point))
+  }
+  /**
    * Draw function
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
    */
@@ -56,4 +69,16 @@ export class Graph {
       point.draw(ctx)
     }
   }
+  /**
+   * @param {Point} point
+   * @returns {boolean} success
+   */
+  tryAddPoint(point) {
+    if (!this.containPoint(point)) {
+      this.addPoint(point)
+      return true
+    }
+    return false
+  }
+
 }

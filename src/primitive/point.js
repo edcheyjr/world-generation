@@ -14,6 +14,7 @@ export default class Point {
     this.x = x
     this.y = y
   }
+
   /**
    * Draw function
    *
@@ -29,5 +30,12 @@ export default class Point {
     ctx.arc(this.x, this.y, radius, 0, Math.PI * 2)
     ctx.fill()
     ctx.closePath()
+  }
+
+  /**
+   * @param {Point} point
+   */
+  equals(point) {
+    return point.x == this.x && point.y == this.y
   }
 }

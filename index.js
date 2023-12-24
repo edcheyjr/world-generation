@@ -9,14 +9,21 @@ const CONTEXT_TYPE = '2d'
 const CONTEXT_ATTRIBUTES = {}
 
 const canvasOne = document.getElementById('canvasOne')
+const addPoint = document.getElementById('addPoint')
 /**
  * @type {CanvasRenderingContext2D}
  */
 const ctx = canvasOne.getContext(CONTEXT_TYPE, CONTEXT_ATTRIBUTES)
-console.log('ctx', ctx)
+const addRandomPoint = () => {
+  const success = graph.tryAddPoint(
+    new Point(Math.random() * canvasOne.width, Math.random() * canvasOne.height)
+  )
+  console.log('success status', success)
+  ctx.clearRect(0, 0, canvasOne.width, canvasOne.height)
+  graph.draw(ctx)
+}
+addPoint.addEventListener('click', addRandomPoint)
 
-// draw an empty graph
-const graph = new Graph()
 graph.draw(ctx)
 
 // Test if it working
