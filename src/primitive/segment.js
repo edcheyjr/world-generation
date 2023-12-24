@@ -28,17 +28,22 @@ export default class Segment {
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
   }
+
   /**
    * check if two segments are the same
    * @param {Segment} seg
+   * @return {boolean}
    */
   equals(seg) {
-    if (
-      (seg.p1.equals(this.p1) && seg.p2.equals(this.p2)) ||
-      (seg.p2.equals(this.p1) && seg.p1.equals(this.p2))
-    ) {
-      return true
-    }
-    return false
+    return this.includes(seg.p1) && this.includes(seg.p2)
+  }
+
+  /**
+   * if a point is contained in this segment
+   * @param {Point} point
+   * @returns {boolean}
+   */
+  includes(point) {
+    return this.p1.equals(point) || this.p2.equals(point)
   }
 }

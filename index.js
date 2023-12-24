@@ -8,39 +8,48 @@ const CONTEXT_TYPE = '2d'
  */
 const CONTEXT_ATTRIBUTES = {}
 
-const canvasOne = document.getElementById('canvasOne')
-const addPoint = document.getElementById('addPoint')
-const addSegment = document.getElementById('addSegment')
+const canvasOneEl = document.getElementById('canvasOne')
+const addPointBtnEl = document.getElementById('addPoint')
+const addSegmentBtnEl = document.getElementById('addSegment')
+const removeSegmentBtnEl = document.getElementById('removeSegment')
 /**
  * @type {CanvasRenderingContext2D}
  */
-const ctx = canvasOne.getContext(CONTEXT_TYPE, CONTEXT_ATTRIBUTES)
+const ctx = canvasOneEl.getContext(CONTEXT_TYPE, CONTEXT_ATTRIBUTES)
 const addRandomPoint = () => {
   const success = graph.tryAddPoint(
     new Point(Math.random() * canvasOne.width, Math.random() * canvasOne.height)
   )
-  console.log('success status', success)
+  console.log('status adding point', success)
   ctx.clearRect(0, 0, canvasOne.width, canvasOne.height)
   graph.draw(ctx)
 }
-addPoint.addEventListener('click', addRandomPoint)
+addPointBtnEl.addEventListener('click', addRandomPoint)
 
 const addRandomSegment = () => {
   const index = Math.floor(Math.random() * graph.points.length)
   const index2 = Math.floor(Math.random() * graph.points.length)
-  if (index != index2) {
-    const success = graph.tryAddSegment(
-      new Segment(graph.points[index], graph.points[index2])
-    )
-    console.log('success status', success)
-  } else {
-    console.warn('trying to add segement on the same point , try again')
-  }
+  const success = graph.tryAddSegment(
+    new Segment(graph.points[index], graph.points[index2])
+  )
+  console.log('status adding segment', success)
   ctx.clearRect(0, 0, canvasOne.width, canvasOne.height)
   graph.draw(ctx)
 }
-addSegment.addEventListener('click', addRandomSegment)
+addSegmentBtnEl.addEventListener('click', addRandomSegment)
 
+const removeRandomSegment = () => {
+  if (graph.segments.length == 0) {
+    console.warn('no segment to remove')
+    return
+  }
+  const index = Math.floor(Math.random() * graph.segments.length)
+  const segArr = graph.removeSegment(graph.segments[index], index)
+  ctx.clearRect(0, 0, canvasOne.width, canvasOne.height)
+  graph.draw(ctx)
+  console.log('successfully removed the following segments', segArr)
+}
+removeSegmentBtnEl.addEventListener('click', removeRandomSegment)
 const p1 = new Point(100, 100)
 const p2 = new Point(300, 400)
 const p3 = new Point(200, 100)
@@ -54,4 +63,6 @@ const graph = new Graph([p1, p2, p3, p4], [s2, s1, s3, s4, s5])
 graph.draw(ctx)
 
 // Test if it working
+// console.log('ponts', graph.points)
+console.log('segments', graph.segments)
 console.warn('Everything in Order!')
