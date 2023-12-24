@@ -24,6 +24,16 @@ const addRandomPoint = () => {
 }
 addPoint.addEventListener('click', addRandomPoint)
 
+const p1 = new Point(100, 100)
+const p2 = new Point(300, 400)
+const p3 = new Point(200, 100)
+const p4 = new Point(400, 400)
+const s1 = new Segment(p1, p2)
+const s2 = new Segment(p2, p3)
+const s3 = new Segment(p1, p3)
+const s4 = new Segment(p3, p4)
+const s5 = new Segment(p2, p4)
+const graph = new Graph([p1, p2, p3, p4], [s2, s1, s3, s4, s5])
 graph.draw(ctx)
 
 // Test if it working
