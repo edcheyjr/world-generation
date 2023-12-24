@@ -1,4 +1,4 @@
-import Point from './point'
+import Point from './point.js'
 
 export default class Segment {
   /**
@@ -27,5 +27,18 @@ export default class Segment {
     ctx.moveTo(this.p1.x, this.p1.y)
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
+  }
+  /**
+   * check if two segments are the same
+   * @param {Segment} seg
+   */
+  equals(seg) {
+    if (
+      (seg.p1.equals(this.p1) && seg.p2.equals(this.p2)) ||
+      (seg.p2.equals(this.p1) && seg.p1.equals(this.p2))
+    ) {
+      return true
+    }
+    return false
   }
 }

@@ -1,4 +1,4 @@
-import Segment from '../primitive/segment'
+import Segment from '../primitive/segment.js'
 import Point from '../primitive/point.js'
 
 export class Graph {
@@ -31,8 +31,6 @@ export class Graph {
    *                         The edges are typically represented by straight lines connecting nodes.
    * ______________________________________________________________________________________________
    *
-   * @param {Segment[]} segments edge / lines/ segments / link connecting nodes / vertices / points
-   *                               this can be use to store info telling the relations between nodes
    * @param {Point[]} points nodes / vertices / point  connected by edge/ lines / links, and can be used to
    *                          marking change in direction or magnitude or store bits of information
    * @param {Segment[]} segments edge / lines/ segments / link connecting nodes / vertices / points
@@ -53,10 +51,24 @@ export class Graph {
     // console.log(this.points)
   }
   /**
+   * @param {Segment} seg
+   */
+  addSegment(seg) {
+    this.segments.push(seg)
+  }
+
+  /**
    * @param {Point} point
    */
   containPoint(point) {
     return this.points.find((p) => p.equals(point))
+  }
+  /**
+   *
+   * @param {Segment} seg
+   */
+  containsSegment(seg) {
+    return this.segments.find((s) => s.equals(seg))
   }
   /**
    * Draw function
@@ -83,4 +95,14 @@ export class Graph {
     return false
   }
 
+  /**
+   * @param {Segment} seg
+   */
+  tryAddSegment(seg) {
+    if (this.points.length > 2 && !this.containsSegment(seg)) {
+      this.addSegment(seg)
+      return true
+    }
+    return false
+  }
 }

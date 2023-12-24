@@ -10,6 +10,7 @@ const CONTEXT_ATTRIBUTES = {}
 
 const canvasOne = document.getElementById('canvasOne')
 const addPoint = document.getElementById('addPoint')
+const addSegment = document.getElementById('addSegment')
 /**
  * @type {CanvasRenderingContext2D}
  */
@@ -23,6 +24,22 @@ const addRandomPoint = () => {
   graph.draw(ctx)
 }
 addPoint.addEventListener('click', addRandomPoint)
+
+const addRandomSegment = () => {
+  const index = Math.floor(Math.random() * graph.points.length)
+  const index2 = Math.floor(Math.random() * graph.points.length)
+  if (index != index2) {
+    const success = graph.tryAddSegment(
+      new Segment(graph.points[index], graph.points[index2])
+    )
+    console.log('success status', success)
+  } else {
+    console.warn('trying to add segement on the same point , try again')
+  }
+  ctx.clearRect(0, 0, canvasOne.width, canvasOne.height)
+  graph.draw(ctx)
+}
+addSegment.addEventListener('click', addRandomSegment)
 
 const p1 = new Point(100, 100)
 const p2 = new Point(300, 400)
