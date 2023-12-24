@@ -48,7 +48,6 @@ export class Graph {
    */
   addPoint(point) {
     this.points.push(point)
-    // console.log(this.points)
   }
   /**
    * @param {Segment} seg
@@ -92,6 +91,7 @@ export class Graph {
       this.addPoint(point)
       return true
     }
+    console.log('points', this.points)
     return false
   }
 
@@ -99,10 +99,35 @@ export class Graph {
    * @param {Segment} seg
    */
   tryAddSegment(seg) {
-    if (this.points.length > 2 && !this.containsSegment(seg)) {
-      this.addSegment(seg)
-      return true
+    // any point present
+    if (this.points.length < 2) {
+      console.warn('not enough point to add segment , try adding points!')
+      return false
     }
-    return false
+    // point adding not the same point
+    if (seg.p1.equals(seg.p2)) {
+      console.warn('trying to add segment on the same point , try again!')
+      return false
+    }
+    // segment does not already exists
+    if (this.containsSegment(seg)) {
+      console.warn('segment already added , try again!')
+      return false
+    }
+    //else add the segment
+    this.addSegment(seg)
+    return true
+  }
+  /**
+   *
+   * @param {Segment} seg
+   * @param {number | undefined} index
+   */
+  removeSegment(seg, index = undefined) {
+    if (index) {
+      return this.segments.splice(index, 1)
+    } else {
+      return this.segments.splice(this.segments.indexOf(seg), 1)
+    }
   }
 }
