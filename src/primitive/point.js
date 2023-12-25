@@ -17,19 +17,30 @@ export default class Point {
 
   /**
    * Draw function
-   *
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
-   * @param {number} size size for individual points
-   * @param {string} color color
+   * @param {object} attributes
+   * @param {number} attributes.size size for individual points
+   * @param {string} attributes.color color
+   * @param {boolean} attributes.outlined is outlined
    */
 
-  draw(ctx, size = 18, color = 'black') {
+  draw(ctx, { size = 18, color = 'black', outlined = false } = {}) {
     const radius = size * 0.5
     ctx.beginPath()
     ctx.fillStyle = color
     ctx.arc(this.x, this.y, radius, 0, Math.PI * 2)
     ctx.fill()
     ctx.closePath()
+    if (outlined) {
+      ctx.save()
+      ctx.globalAlpha = 0.8
+      ctx.beginPath()
+      ctx.lineWidth = 2
+      ctx.strokeStyle = 'red'
+      ctx.arc(this.x, this.y, radius * 0.6, 0, Math.PI * 2)
+      ctx.stroke()
+      ctx.restore()
+    }
   }
 
   /**
