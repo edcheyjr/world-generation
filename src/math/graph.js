@@ -55,7 +55,13 @@ export class Graph {
   addSegment(seg) {
     this.segments.push(seg)
   }
-
+  /**
+   * Set the graph to empty
+   */
+  clear() {
+    this.segments.length = 0
+    this.points.length = 0
+  }
   /**
    * @param {Point} point
    */
@@ -70,7 +76,7 @@ export class Graph {
     return this.segments.find((s) => s.equals(seg))
   }
   /**
-   * Draw function
+   * draw function
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
    */
 
@@ -81,6 +87,54 @@ export class Graph {
     for (const point of this.points) {
       point.draw(ctx)
     }
+  }
+  /**
+   * gets all segment associated with a given point
+   * @param {Point} point
+   * @return {Segment[]} array of segments
+   */
+  getSegmentsWithPoint(point) {
+    const includedSegments = []
+    for (let seg of this.segments) {
+      if (seg.includes(point)) {
+        includedSegments.push(seg)
+      }
+    }
+    return includedSegments
+  }
+
+  /**
+   * removes a point/node and all segment associated with it
+   * @param {Point} point
+   * @param {number | undefined} index
+   * @return {Point} removed point is returned
+   */
+  removePoint(point, index = undefined) {
+    const segs = this.getSegmentsWithPoint(point)
+    for (let seg of segs) {
+      this.removeSegment(seg)
+    }
+    if (index) {
+      this.points.splice(index, 1)
+    } else {
+      this.points.splice(this.segments.indexOf(point), 1)
+    }
+    return point
+  }
+
+  /**
+   * removes a segment
+   * @param {Segment } seg
+   * @param {number | undefined} index
+   * @return {Segment} segment removed
+   */
+  removeSegment(seg, index = undefined) {
+    if (index) {
+      this.segments.splice(index, 1)
+    } else {
+      this.segments.splice(this.segments.indexOf(seg), 1)
+    }
+    return seg
   }
   /**
    * @param {Point} point
@@ -117,17 +171,5 @@ export class Graph {
     //else add the segment
     this.addSegment(seg)
     return true
-  }
-  /**
-   *
-   * @param {Segment} seg
-   * @param {number | undefined} index
-   */
-  removeSegment(seg, index = undefined) {
-    if (index) {
-      return this.segments.splice(index, 1)
-    } else {
-      return this.segments.splice(this.segments.indexOf(seg), 1)
-    }
   }
 }
