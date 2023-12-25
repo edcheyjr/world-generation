@@ -7,7 +7,11 @@ import Point from '../primitive/point.js'
  * @param {number} threshold
  * @returns {Point}
  */
-export function getNearestPoint(loc, points, threshold = 15) {
+export function getNearestPoint(
+  loc,
+  points,
+  threshold = Number.MAX_SAFE_INTEGER
+) {
   let minDist = Number.MAX_SAFE_INTEGER
   let nearestPoint = null
   for (let point of points) {

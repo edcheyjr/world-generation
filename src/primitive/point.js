@@ -22,9 +22,13 @@ export default class Point {
    * @param {number} attributes.size size for individual points
    * @param {string} attributes.color color
    * @param {boolean} attributes.outlined is outlined
+   * @param {boolean} attributes.fill is fill
    */
 
-  draw(ctx, { size = 18, color = 'black', outlined = false } = {}) {
+  draw(
+    ctx,
+    { size = 18, color = 'black', outlined = false, fill = false } = {}
+  ) {
     const radius = size * 0.5
     ctx.beginPath()
     ctx.fillStyle = color
@@ -40,6 +44,12 @@ export default class Point {
       ctx.arc(this.x, this.y, radius * 0.6, 0, Math.PI * 2)
       ctx.stroke()
       ctx.restore()
+    }
+    if (fill) {
+      ctx.beginPath()
+      ctx.fillStyle = 'orange'
+      ctx.arc(this.x, this.y, radius * 0.3, 0, Math.PI * 2)
+      ctx.fill()
     }
   }
 

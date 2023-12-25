@@ -25,8 +25,7 @@ export default class GraphEditor {
   #addEventListeners() {
     this.canvas.addEventListener('mousedown', (e) => {
       let mousePoint = new Point(e.offsetX, e.offsetY)
-      this.hovered = getNearestPoint(mousePoint, this.graph.points)
-      this.selected = this.hovered
+      this.hovered = getNearestPoint(mousePoint, this.graph.points, 12)
       if (this.hovered) {
         this.selected = this.hovered
         return
@@ -34,9 +33,10 @@ export default class GraphEditor {
       this.graph.addPoint(mousePoint)
       this.selected = mousePoint
     })
-    // this.canvas.addEventListener('mouseover', (e) => {
-    //   const mousePoint = new Point(e.offsetX, e.offsetY)
-    // })
+    this.canvas.addEventListener('mousemove', (e) => {
+      const mousePoint = new Point(e.offsetX, e.offsetY)
+      this.hovered = getNearestPoint(mousePoint, this.graph.points, 12)
+    })
     // this.canvas.addEventListener('mouseleave', (e) => {
     //   this.hovered = null
     // })
@@ -45,6 +45,9 @@ export default class GraphEditor {
     this.graph.draw(this.ctx)
     if (this.selected) {
       this.selected.draw(this.ctx, { outlined: true })
+    }
+    if (this.hovered) {
+      this.hovered.draw(this.ctx, { fill: true })
     }
   }
 }
