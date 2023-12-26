@@ -53,6 +53,7 @@ export default class Point {
   }
 
   /**
+   * test equality of current(this) point and passed point
    * @param {Point} point
    */
   equals(point) {
