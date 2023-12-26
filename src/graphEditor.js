@@ -24,23 +24,34 @@ export default class GraphEditor {
   }
   #addEventListeners() {
     this.canvas.addEventListener('mousedown', (e) => {
-      let mousePoint = new Point(e.offsetX, e.offsetY)
-      this.hovered = getNearestPoint(mousePoint, this.graph.points, 12)
-      if (this.hovered) {
-        this.selected = this.hovered
-        return
+      if (e.button == 2) {
+        //right click mouse to remove
+        if (this.hovered) {
+          this.#removePoint(this.hovered)
+        }
       }
-      this.graph.addPoint(mousePoint)
-      this.selected = mousePoint
+
+      if (e.button == 0) {
+        //left click mouse to select
+        let mousePoint = new Point(e.offsetX, e.offsetY)
+        if (this.hovered) {
+          this.selected = this.hovered
+          return
+        }
+        this.graph.addPoint(mousePoint)
+        this.selected = mousePoint
+      }
     })
     this.canvas.addEventListener('mousemove', (e) => {
       const mousePoint = new Point(e.offsetX, e.offsetY)
       this.hovered = getNearestPoint(mousePoint, this.graph.points, 12)
     })
+    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
     // this.canvas.addEventListener('mouseleave', (e) => {
     //   this.hovered = null
     // })
   }
+
   display() {
     this.graph.draw(this.ctx)
     if (this.selected) {
@@ -49,5 +60,13 @@ export default class GraphEditor {
     if (this.hovered) {
       this.hovered.draw(this.ctx, { fill: true })
     }
+  }
+  /**
+   * @param {Point} p
+   */
+  #removePoint(p) {
+    this.hovered = null
+    this.selected = null
+    this.graph.removePoint(p)
   }
 }
