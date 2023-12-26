@@ -21,6 +21,7 @@ export default class GraphEditor {
     this.#addEventListeners()
     this.selected = null
     this.hovered = null
+    this.dragging = false
   }
   #addEventListeners() {
     this.canvas.addEventListener('mousedown', (e) => {
@@ -36,16 +37,23 @@ export default class GraphEditor {
         let mousePoint = new Point(e.offsetX, e.offsetY)
         if (this.hovered) {
           this.selected = this.hovered
+          this.dragging = true
           return
         }
         this.graph.addPoint(mousePoint)
         this.selected = mousePoint
+        this.hovered = mousePoint
       }
     })
     this.canvas.addEventListener('mousemove', (e) => {
       const mousePoint = new Point(e.offsetX, e.offsetY)
       this.hovered = getNearestPoint(mousePoint, this.graph.points, 12)
+      if (this.dragging) {
+        this.selected.x = mousePoint.x
+        this.selected.y = mousePoint.y
+      }
     })
+    this.canvas.addEventListener('mouseup', () => (this.dragging = false))
     this.canvas.addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
     // this.canvas.addEventListener('mouseleave', (e) => {
     //   this.hovered = null
