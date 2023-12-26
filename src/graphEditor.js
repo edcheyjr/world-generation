@@ -40,7 +40,10 @@ export default class GraphEditor {
           this.dragging = true
           return
         }
-        this.graph.addPoint(mousePoint)
+        // added segment between previous selected point and current new point
+        if (this.selected) {
+          this.graph.tryAddSegment(new Segment(this.selected, mousePoint))
+        }
         this.selected = mousePoint
         this.hovered = mousePoint
       }
