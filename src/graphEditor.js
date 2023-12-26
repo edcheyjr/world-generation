@@ -1,6 +1,7 @@
 import { Graph } from './math/graph.js'
 import Point from './primitive/point.js'
 import { getNearestPoint } from './math/utils.js'
+import Segment from './primitive/segment.js'
 
 export default class GraphEditor {
   /**
@@ -44,6 +45,7 @@ export default class GraphEditor {
         if (this.selected) {
           this.graph.tryAddSegment(new Segment(this.selected, mousePoint))
         }
+        this.graph.tryAddPoint(mousePoint)
         this.selected = mousePoint
         this.hovered = mousePoint
       }
@@ -77,7 +79,9 @@ export default class GraphEditor {
    */
   #removePoint(p) {
     this.hovered = null
-    this.selected = null
+    if (p == this.selected) {
+      this.selected = null
+    }
     this.graph.removePoint(p)
   }
 }
