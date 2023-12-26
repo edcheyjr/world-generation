@@ -27,7 +27,7 @@ const s4 = new Segment(p3, p4)
 const s5 = new Segment(p2, p4)
 const graph = new Graph([p1, p2, p3, p4], [s2, s1, s3, s4, s5])
 const viewport = new ViewPort(canvasOneEl)
-const graphEditor = new GraphEditor(canvasOneEl, graph, CONTEXT_TYPE)
+const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
 
 function animate() {
   ctx.clearRect(0, 0, canvasOneEl.width, canvasOneEl.height)

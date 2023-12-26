@@ -1,3 +1,5 @@
+import Point from './primitive/point.js'
+
 export default class Viewport {
   /**
    * Viewport
@@ -9,7 +11,7 @@ export default class Viewport {
     this.zoom = 1
     this.zoomAttir = {
       minZoom: 1,
-      maxZoom: 6,
+      maxZoom: 5,
       zoomSteps: 0.1,
     }
     this.#addEventListeners()
@@ -18,7 +20,6 @@ export default class Viewport {
   #addEventListeners() {
     this.canvas.addEventListener('wheel', this.#handleMouseWheel.bind(this))
   }
-
   /**
    * handle mouse wheel
    * @param {WheelEvent} e mouse wheel event
@@ -30,5 +31,13 @@ export default class Viewport {
       this.zoomAttir.minZoom,
       Math.min(this.zoomAttir.maxZoom, this.zoom)
     ) // zoom cap between min and max zooms
+  }
+  /**
+   * Get mouse point position in respect to zoom level
+   * @param {MouseEvent} e
+   * @return {Point} mouse point
+   */
+  getMousePointPos(e) {
+    return new Point(e.offsetX * this.zoom, e.offsetY * this.zoom)
   }
 }

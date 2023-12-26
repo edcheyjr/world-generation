@@ -2,22 +2,23 @@ import { Graph } from './math/graph.js'
 import Point from './primitive/point.js'
 import { getNearestPoint } from './math/utils.js'
 import Segment from './primitive/segment.js'
+import Viewport from './viewport.js'
 
 export default class GraphEditor {
   /**
    * Graph Editor
-   * @param {HTMLCanvasElement} canvas this canvas el
+   * @param {Viewport} viewport this canvas el
    * @param {Graph} graph graph
    * @param {string} contextType 2D
    * @returns {GraphEditor} new graph editor
    */
-  constructor(canvas, graph, contextType) {
-    this.canvas = canvas
+  constructor(viewport, graph, contextType) {
+    this.viewport = viewport
     /**
      * context
      * @type {CanvasRenderingContext2D}
      */
-    this.ctx = this.canvas.getContext(contextType)
+    this.ctx = this.#getCanvas().getContext(contextType)
     this.graph = graph
     this.mouse = null
     this.hovered = null
@@ -26,12 +27,17 @@ export default class GraphEditor {
     this.#addEventListeners()
   }
   #addEventListeners() {
-    this.canvas.addEventListener('mousedown', this.#handleMouseDown.bind(this))
-    this.canvas.addEventListener('mousemove', this.#handleMouseMove.bind(this))
-    this.canvas.addEventListener('mouseup', () => (this.dragging = false))
-    this.canvas.addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
+    this.#getCanvas().addEventListener(
+      'mousedown',
+      this.#handleMouseDown.bind(this)
+    )
+    this.#getCanvas().addEventListener(
+      'mousemove',
+      this.#handleMouseMove.bind(this)
+    )
+    this.#getCanvas().addEventListener('mouseup', () => (this.dragging = false))
+    this.#getCanvas().addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
   }
-
   display() {
     this.graph.draw(this.ctx)
     if (this.selected) {
@@ -44,6 +50,9 @@ export default class GraphEditor {
     if (this.hovered) {
       this.hovered.draw(this.ctx, { fill: true })
     }
+  }
+  #getCanvas() {
+    return this.viewport.canvas
   }
   /**
    * @param {MouseEvent} e mouse event
@@ -75,7 +84,7 @@ export default class GraphEditor {
    * @param {MouseEvent} e mouse event
    */
   #handleMouseMove(e) {
-    this.mouse = new Point(e.offsetX, e.offsetY)
+    this.mouse = this.viewport.getMousePointPos(e)
     this.hovered = getNearestPoint(this.mouse, this.graph.points, 12)
     if (this.dragging) {
       this.selected.x = this.mouse.x
