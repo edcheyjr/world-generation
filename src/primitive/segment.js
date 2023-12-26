@@ -15,18 +15,22 @@ export default class Segment {
     this.p2 = p2
   }
   /**
-   *
+   * draw function for a segment
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
-   * @param {number} width thickness of the line
-   * @param {string} color  line/stroke color
+   * @param {object} attributes segments additional attributes
+   * @param {number} attributes.width thickness of the line
+   * @param {string} attributes.color  line/stroke color
+   * @param {number[]} attributes.dashed  array of dash size and gap size [dash, gap]
    */
-  draw(ctx, width = 2, color = 'black') {
+  draw(ctx, { width = 2, color = 'black', dashed = [] } = {}) {
     ctx.beginPath()
     ctx.lineWidth = width
     ctx.strokeStyle = color
+    ctx.setLineDash(dashed)
     ctx.moveTo(this.p1.x, this.p1.y)
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
+    ctx.setLineDash([])
   }
 
   /**
