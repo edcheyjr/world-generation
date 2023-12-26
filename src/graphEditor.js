@@ -27,9 +27,7 @@ export default class GraphEditor {
   }
   #addEventListeners() {
     this.canvas.addEventListener('mousedown', this.#handleMouseDown.bind(this))
-    this.canvas.addEventListener('mousemove', (e) =>
-      this.#handleMouseMove.bind(this)
-    )
+    this.canvas.addEventListener('mousemove', this.#handleMouseMove.bind(this))
     this.canvas.addEventListener('mouseup', () => (this.dragging = false))
     this.canvas.addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
   }
