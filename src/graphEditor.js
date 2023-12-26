@@ -13,16 +13,17 @@ export default class GraphEditor {
    */
   constructor(canvas, graph, contextType) {
     this.canvas = canvas
-    this.graph = graph
     /**
      * context
      * @type {CanvasRenderingContext2D}
      */
     this.ctx = this.canvas.getContext(contextType)
-    this.#addEventListeners()
-    this.selected = null
+    this.graph = graph
+    this.mouse = null
     this.hovered = null
+    this.selected = null
     this.dragging = false
+    this.#addEventListeners()
   }
   #addEventListeners() {
     this.canvas.addEventListener('mousedown', (e) => {
@@ -30,32 +31,30 @@ export default class GraphEditor {
         //right click mouse to remove
         if (this.hovered) {
           this.#removePoint(this.hovered)
+        } else {
+          this.selected = null
         }
       }
 
       if (e.button == 0) {
         //left click mouse to select
-        let mousePoint = new Point(e.offsetX, e.offsetY)
         if (this.hovered) {
-          this.selected = this.hovered
+          // added segment between point
+          this.#selectPoint(this.hovered)
           this.dragging = true
           return
         }
-        // added segment between previous selected point and current new point
-        if (this.selected) {
-          this.graph.tryAddSegment(new Segment(this.selected, mousePoint))
-        }
-        this.graph.tryAddPoint(mousePoint)
-        this.selected = mousePoint
-        this.hovered = mousePoint
+        this.#selectPoint(this.mouse)
+        this.graph.tryAddPoint(this.mouse)
+        this.hovered = this.mouse
       }
     })
     this.canvas.addEventListener('mousemove', (e) => {
-      const mousePoint = new Point(e.offsetX, e.offsetY)
-      this.hovered = getNearestPoint(mousePoint, this.graph.points, 12)
+      this.mouse = new Point(e.offsetX, e.offsetY)
+      this.hovered = getNearestPoint(this.mouse, this.graph.points, 12)
       if (this.dragging) {
-        this.selected.x = mousePoint.x
-        this.selected.y = mousePoint.y
+        this.selected.x = this.mouse.x
+        this.selected.y = this.mouse.y
       }
     })
     this.canvas.addEventListener('mouseup', () => (this.dragging = false))
@@ -75,13 +74,23 @@ export default class GraphEditor {
     }
   }
   /**
-   * @param {Point} p
+   * @param {Point} point
    */
-  #removePoint(p) {
+  #removePoint(point) {
     this.hovered = null
-    if (p == this.selected) {
+    if (point == this.selected) {
       this.selected = null
     }
-    this.graph.removePoint(p)
+    this.graph.removePoint(point)
+  }
+  /**
+   * select a point and also tries to add a segment between prev selected and the new selected point
+   * @param {Point} point
+   */
+  #selectPoint(point) {
+    if (this.selected) {
+      this.graph.tryAddSegment(new Segment(this.selected, point))
+    }
+    this.selected = point
   }
 }
