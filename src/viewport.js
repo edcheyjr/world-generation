@@ -2,7 +2,7 @@ export default class Viewport {
   /**
    * Viewport
    * @param {HTMLCanvasElement} canvas this canvas el
-   * @returns {Viewport} new graph editor
+   * @returns {Viewport} viewport object
    */
   constructor(canvas) {
     this.canvas = canvas
@@ -14,9 +14,11 @@ export default class Viewport {
     }
     this.#addEventListeners()
   }
+
   #addEventListeners() {
     this.canvas.addEventListener('wheel', this.#handleMouseWheel.bind(this))
   }
+
   /**
    * handle mouse wheel
    * @param {WheelEvent} e mouse wheel event
@@ -28,6 +30,5 @@ export default class Viewport {
       this.zoomAttir.minZoom,
       Math.min(this.zoomAttir.maxZoom, this.zoom)
     ) // zoom cap between min and max zooms
-    // console.log(this.zoom)
   }
 }

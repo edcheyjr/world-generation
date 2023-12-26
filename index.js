@@ -1,8 +1,8 @@
 import { Graph } from './src/math/graph.js'
 import Point from './src/primitive/point.js'
 import Segment from './src/primitive/segment.js'
-import GraphEditor from './src/graphEditor.js'
 import ViewPort from './src/viewport.js'
+import GraphEditor from './src/graphEditor.js'
 
 const CONTEXT_TYPE = '2d'
 /**
@@ -31,11 +31,14 @@ const graphEditor = new GraphEditor(canvasOneEl, graph, CONTEXT_TYPE)
 
 function animate() {
   ctx.clearRect(0, 0, canvasOneEl.width, canvasOneEl.height)
+  ctx.save()
+  const scaleValue = 1 / viewport.zoom
+  ctx.scale(scaleValue, scaleValue)
   graphEditor.display()
+  ctx.restore()
   requestAnimationFrame(animate)
 }
 animate()
-// Test if it working
 // console.log('ponts', graph.points)
-console.log('segments', graph.segments)
+// console.log('segments', graph.segments)
 console.warn('Everything in Order!')
