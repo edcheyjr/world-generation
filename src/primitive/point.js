@@ -16,7 +16,7 @@ export default class Point {
   }
 
   /**
-   * Draw function
+   * draw function for a point
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
    * @param {object} attributes
    * @param {number} attributes.size size for individual points
@@ -36,14 +36,13 @@ export default class Point {
     ctx.fill()
     ctx.closePath()
     if (outlined) {
-      ctx.save()
       ctx.globalAlpha = 0.8
       ctx.beginPath()
       ctx.lineWidth = 2
       ctx.strokeStyle = 'red'
       ctx.arc(this.x, this.y, radius * 0.6, 0, Math.PI * 2)
       ctx.stroke()
-      ctx.restore()
+      ctx.globalAlpha = 1
     }
     if (fill) {
       ctx.beginPath()
