@@ -9,11 +9,13 @@ export default class Viewport {
   constructor(canvas) {
     this.canvas = canvas
     this.zoom = 1
+    this.panOffset = new Point(0, 0)
     this.zoomAttir = {
       minZoom: 1,
       maxZoom: 5,
       zoomSteps: 0.1,
     }
+    this.panInfo = {}
     this.#addEventListeners()
   }
 
