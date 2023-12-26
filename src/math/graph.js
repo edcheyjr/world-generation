@@ -106,7 +106,7 @@ export class Graph {
   /**
    * removes a point/node and all segment associated with it
    * @param {Point} point
-   * @param {number | undefined} index
+   * @param {number | undefined} index index of the point
    * @return {Point} removed point is returned
    */
   removePoint(point, index = undefined) {
@@ -117,7 +117,7 @@ export class Graph {
     if (index) {
       this.points.splice(index, 1)
     } else {
-      this.points.splice(this.segments.indexOf(point), 1)
+      this.points.splice(this.points.indexOf(point), 1)
     }
     return point
   }
