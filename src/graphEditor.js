@@ -67,6 +67,10 @@ export default class GraphEditor {
   display() {
     this.graph.draw(this.ctx)
     if (this.selected) {
+      const intent = this.hovered ?? this.mouse
+      this.ctx.globalAlpha = 0.3
+      new Segment(this.selected, intent).draw(this.ctx, { dashed: [3, 3] })
+      this.ctx.globalAlpha = 1
       this.selected.draw(this.ctx, { outlined: true })
     }
     if (this.hovered) {
