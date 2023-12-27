@@ -1,6 +1,26 @@
 import Point from '../primitive/point.js'
 
 /**
+ * finds the addition between two point vectors
+ * @param {Point} p1 vector
+ * @param {Point} p2 vector
+ * @returns {Point} vector
+ */
+export function add(p1, p2) {
+  return new Point(p1.x + p2.x, p1.y + p2.y)
+}
+
+/**
+ * finds the difference between two point vectors
+ * @param {Point} p1 vector
+ * @param {Point} p2 vector
+ * @returns {Point} vector
+ */
+export function subract(p1, p2) {
+  return new Point(p1.x - p2.x, p1.y - p2.y)
+}
+
+/**
  *  finds the rnearest point to current mouse location (loc)
  * @param {Point} loc
  * @param {Point[]} points
