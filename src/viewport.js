@@ -1,5 +1,5 @@
 import Point from './primitive/point.js'
-import { subract, add } from './math/utils.js'
+import { subract, add, scale } from './math/utils.js'
 
 export default class Viewport {
   /**
@@ -10,7 +10,8 @@ export default class Viewport {
   constructor(canvas) {
     this.canvas = canvas
     this.zoom = 1
-    this.globalOffset = new Point(0, 0)
+    this.center = new Point(canvas.width / 2, canvas.height / 2)
+    this.globalOffset = scale(this.center, -1)
     this.zoomAttir = {
       minZoom: 1,
       maxZoom: 5,
@@ -84,8 +85,23 @@ export default class Viewport {
   /**
    * Get mouse point position in respect to zoom level
    * @param {MouseEvent} e
+   * @param {boolean | undefined} subtractPanOffset this is boolean
    * @return {Point} mouse point
    */
+  getMousePointPos(e, subtractPanOffset = false) {
+    const p = new Point(
+      (e.offsetX - this.center.x) * this.zoom - this.globalOffset.x,
+      (e.offsetY - this.center.y) * this.zoom - this.globalOffset.y
+    )
+    return subtractPanOffset ? subract(p, this.pan.offset) : p
+  }
+  /**
+   * gets cumulative offset of the globalOffset and pan offset
+   * @returns {Point}
+   */
+  getOffset() {
+    return add(this.globalOffset, this.pan.offset)
+  }
   /**
    * changes current viewport settings
    * @param {CanvasRenderingContext2D} ctx canvas context
