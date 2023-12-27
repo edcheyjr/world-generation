@@ -84,7 +84,7 @@ export default class GraphEditor {
    * @param {MouseEvent} e mouse event
    */
   #handleMouseMove(e) {
-    this.mouse = this.viewport.getMousePointPos(e)
+    this.mouse = this.viewport.getMousePointPos(e, true)
     this.hovered = getNearestPoint(
       this.mouse,
       this.graph.points,

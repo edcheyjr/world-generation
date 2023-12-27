@@ -86,7 +86,18 @@ export default class Viewport {
    * @param {MouseEvent} e
    * @return {Point} mouse point
    */
-  getMousePointPos(e) {
-    return new Point(e.offsetX * this.zoom, e.offsetY * this.zoom)
+  /**
+   * changes current viewport settings
+   * @param {CanvasRenderingContext2D} ctx canvas context
+   */
+  reset(ctx) {
+    ctx.restore()
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    ctx.save()
+    const scaleValue = 1 / this.zoom
+    ctx.translate(this.center.x, this.center.y)
+    ctx.scale(scaleValue, scaleValue) //zooming / scaling
+    const offset = this.getOffset()
+    ctx.translate(offset.x, offset.y) // panning / translating
   }
 }
