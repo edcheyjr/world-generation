@@ -21,6 +21,16 @@ export function subract(p1, p2) {
 }
 
 /**
+ * scales a point by a scaler value
+ * @param {Point} p1 vector
+ * @param {number} scaler scale value
+ * @returns {Point} vector
+ */
+export function scale(p1, scaler) {
+  return new Point(p1.x * scaler, p1.y * scaler)
+}
+
+/**
  *  finds the rnearest point to current mouse location (loc)
  * @param {Point} loc
  * @param {Point[]} points
