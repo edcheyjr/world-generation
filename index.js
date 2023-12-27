@@ -33,7 +33,8 @@ function animate() {
   ctx.clearRect(0, 0, canvasOneEl.width, canvasOneEl.height)
   ctx.save()
   const scaleValue = 1 / viewport.zoom
-  ctx.scale(scaleValue, scaleValue)
+  ctx.scale(scaleValue, scaleValue) //zooming / scaling
+  ctx.translate(viewport.globalOffset.x, viewport.globalOffset.y) // panning / translating
   graphEditor.display()
   ctx.restore()
   requestAnimationFrame(animate)
