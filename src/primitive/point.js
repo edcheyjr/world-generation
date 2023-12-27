@@ -4,8 +4,8 @@ export default class Point {
    *
    * ------------------------
    *
-   * @param {number} x a position from 0 to canvas width
-   * @param {number} y a position from 0 to canvas height
+   * @param {number} x some position from 0 to canvas width (X axis)
+   * @param {number} y some position from 0 to canvas height (Y axis)
    *
    *
    * @return { Point} a new point object
