@@ -18,6 +18,14 @@ h1 {
 }
 button {
   cursor: pointer;
-  padding: 3px 4px;
+  padding: 4px 6px;
   font-size: larger;
+  border: 1px solid white;
+  background: transparent;
+  border-radius: 2px;
+}
+
+button:hover {
+  border: 1px solid #2a5;
+  background-color: rgba(34, 170, 86, 0.336);
 }
