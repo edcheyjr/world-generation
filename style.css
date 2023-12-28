@@ -16,3 +16,8 @@ h1 {
 #control {
   display: flex;
 }
+button {
+  cursor: pointer;
+  padding: 3px 4px;
+  font-size: larger;
+}
