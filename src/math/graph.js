@@ -44,6 +44,27 @@ export class Graph {
     this.points = points
   }
   /**
+   * Loads graph info to the graph class
+   *
+   * @param {{
+   * points:{x:number,y:number}[],
+   *  segments: {p1:{x:number, y:number}, p2:{x:number, y:number}}[]
+   * }} info
+   *
+   * @return {Graph} new instance of graph class with the information
+   */
+  static load(info) {
+    const points = []
+    const segments = []
+    for (let point of info.points) {
+      points.push(new Point(point.x, point.y))
+    }
+    for (let seg of info.segments) {
+      segments.push(new Segment(seg.p1, seg.p2))
+    }
+    return new Graph(points, segments)
+  }
+  /**
    * @param {Point} point
    */
   addPoint(point) {
@@ -154,7 +175,7 @@ export class Graph {
    */
   tryAddSegment(seg) {
     // any point present
-    if (this.points.length < 2) {
+    if (this.points.length < 1) {
       console.warn('not enough point to add segment , try adding points!')
       return false
     }
