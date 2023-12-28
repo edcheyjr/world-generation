@@ -60,7 +60,12 @@ export class Graph {
       points.push(new Point(point.x, point.y))
     }
     for (let seg of info.segments) {
-      segments.push(new Segment(seg.p1, seg.p2))
+      segments.push(
+        new Segment(
+          points.find((p) => p.equals(seg.p1)),
+          points.find((p) => p.equals(seg.p2))
+        )
+      )
     }
     return new Graph(points, segments)
   }
