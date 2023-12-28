@@ -47,6 +47,7 @@ console.warn('Everything in Order!')
  */
 function dispose() {
   graphEditor.dispose()
+  console.log('sucessfully cleared graph')
 }
 clearBtnEl.addEventListener('click', dispose)
 
@@ -55,5 +56,6 @@ clearBtnEl.addEventListener('click', dispose)
  */
 function save() {
   localStorage.setItem(GRAPH_STORE_NAME, JSON.stringify(graph))
+  console.log('sucessfully saved graph')
 }
 saveBtnEl.addEventListener('click', save)

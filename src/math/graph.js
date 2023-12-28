@@ -54,19 +54,15 @@ export class Graph {
    * @return {Graph} new instance of graph class with the information
    */
   static load(info) {
-    const points = []
-    const segments = []
-    for (let point of info.points) {
-      points.push(new Point(point.x, point.y))
-    }
-    for (let seg of info.segments) {
-      segments.push(
+    const points = info.points.map((pInfo) => new Point(pInfo.x, pInfo.y))
+    const segments = info.segments.map(
+      (sInfo) =>
         new Segment(
-          points.find((p) => p.equals(seg.p1)),
-          points.find((p) => p.equals(seg.p2))
+          points.find((p) => p.equals(sInfo.p1)),
+          points.find((p) => p.equals(sInfo.p2))
         )
-      )
-    }
+    )
+
     return new Graph(points, segments)
   }
   /**
