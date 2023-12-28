@@ -26,18 +26,13 @@ export default class GraphEditor {
     this.dragging = false
     this.#addEventListeners()
   }
-  #addEventListeners() {
-    this.#getCanvas().addEventListener(
-      'mousedown',
-      this.#handleMouseDown.bind(this)
-    )
-    this.#getCanvas().addEventListener(
-      'mousemove',
-      this.#handleMouseMove.bind(this)
-    )
-    this.#getCanvas().addEventListener('mouseup', () => (this.dragging = false))
-    this.#getCanvas().addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
+
+  dispose() {
+    this.graph.clear()
+    this.selected = null
+    this.hovered = null
   }
+
   display() {
     this.graph.draw(this.ctx)
     if (this.selected) {
@@ -51,6 +46,20 @@ export default class GraphEditor {
       this.hovered.draw(this.ctx, { fill: true })
     }
   }
+
+  #addEventListeners() {
+    this.#getCanvas().addEventListener(
+      'mousedown',
+      this.#handleMouseDown.bind(this)
+    )
+    this.#getCanvas().addEventListener(
+      'mousemove',
+      this.#handleMouseMove.bind(this)
+    )
+    this.#getCanvas().addEventListener('mouseup', () => (this.dragging = false))
+    this.#getCanvas().addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
+  }
+
   #getCanvas() {
     return this.viewport.canvas
   }

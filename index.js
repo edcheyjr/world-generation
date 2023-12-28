@@ -1,10 +1,9 @@
 import { Graph } from './src/math/graph.js'
-import Point from './src/primitive/point.js'
-import Segment from './src/primitive/segment.js'
 import ViewPort from './src/viewport.js'
 import GraphEditor from './src/graphEditor.js'
 
 const CONTEXT_TYPE = '2d'
+const GRAPH_STORE_NAME = 'graph'
 /**
  * @type {CanvasRenderingContext2DSettings}
  */
@@ -18,16 +17,18 @@ const saveBtnEl = document.getElementById('save-btn')
  */
 const ctx = canvasOneEl.getContext(CONTEXT_TYPE, CONTEXT_ATTRIBUTES)
 
-const p1 = new Point(100, 100)
-const p2 = new Point(300, 400)
-const p3 = new Point(200, 100)
-const p4 = new Point(400, 400)
-const s1 = new Segment(p1, p2)
-const s2 = new Segment(p2, p3)
-const s3 = new Segment(p1, p3)
-const s4 = new Segment(p3, p4)
-const s5 = new Segment(p2, p4)
-const graph = new Graph([p1, p2, p3, p4], [s2, s1, s3, s4, s5])
+const graphString = localStorage.getItem(GRAPH_STORE_NAME)
+/**
+ * graph info
+ * @type {{
+ * points:{x:number,y:number}[],
+ * segments: {p1:{x:number, y:number},
+ * p2:{x:number, y:number}}[]
+ * } | null
+ * }
+ */
+const graphInfo = graphString ? JSON.parse(graphString) : null
+const graph = graphInfo ? Graph.load(graphInfo) : new Graph()
 const viewport = new ViewPort(canvasOneEl)
 const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
 
@@ -40,3 +41,19 @@ animate()
 // console.log('ponts', graph.points)
 // console.log('segments', graph.segments)
 console.warn('Everything in Order!')
+
+/**
+ * Clear everything in the editor
+ */
+function dispose() {
+  graphEditor.dispose()
+}
+clearBtnEl.addEventListener('click', dispose)
+
+/**
+ * saves graph content
+ */
+function save() {
+  localStorage.setItem(GRAPH_STORE_NAME, JSON.stringify(graph))
+}
+saveBtnEl.addEventListener('click', save)
