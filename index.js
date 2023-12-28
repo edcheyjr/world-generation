@@ -11,6 +11,8 @@ const CONTEXT_TYPE = '2d'
 const CONTEXT_ATTRIBUTES = {}
 
 const canvasOneEl = document.getElementById('canvasOne')
+const clearBtnEl = document.getElementById('clear-btn')
+const saveBtnEl = document.getElementById('save-btn')
 /**
  * @type {CanvasRenderingContext2D}
  */
