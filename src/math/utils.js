@@ -90,11 +90,7 @@ function lerp(A, B, t) {
  * @param {Point} C point c
  * @param {Point} D point d
  *
- * _____________________________________
- *
  * @returns {{x:number, y:number, offset:number} | null} with x,y point of intersect or null between x and y and the offset
- *
- *
  */
 function getIntersection(A, B, C, D) {
   const tTop = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x)

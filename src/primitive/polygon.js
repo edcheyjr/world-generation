@@ -1,5 +1,6 @@
 import Point from './point.js'
 import Segment from './segment.js'
+import { getIntersection } from '../math/utils.js'
 
 /**
  * primtive shape bulder class
