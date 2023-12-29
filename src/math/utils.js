@@ -1,6 +1,15 @@
 import Point from '../primitive/point.js'
 
+export {
+  angle,
+  add,
+  subract,
+  scale,
+  getNearestPoint,
+  translate,
+  getIntersection,
   lerp,
+}
 /**
  * Returns tangent angle given a vector point(x,y) which is difference  between two vector points
  * @param {Point} points_diff
@@ -69,6 +78,42 @@ function lerp(A, B, t) {
   return A + (B - A) * t
 }
 
+/**
+ * Intersection function
+ * _____________________________________
+ *
+ * @description takes vectors points {A} to {B} AND {C} to {D} and find where they intersect otherwise returns null if not co-ordinates
+ * _____________________________________
+ *
+ * @param {Point} A point a
+ * @param {Point} B point b
+ * @param {Point} C point c
+ * @param {Point} D point d
+ *
+ * _____________________________________
+ *
+ * @returns {{x:number, y:number, offset:number} | null} with x,y point of intersect or null between x and y and the offset
+ *
+ *
+ */
+function getIntersection(A, B, C, D) {
+  const tTop = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x)
+  const uTop = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y)
+  const bottom = (D.y - C.y) * (B.x - A.x) - (D.x - C.x) * (B.y - A.y)
+
+  if (bottom != 0) {
+    const t = tTop / bottom
+    const u = uTop / bottom
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+      return {
+        x: lerp(A.x, B.x, t),
+        y: lerp(A.y, B.y, t),
+        offset: t,
+      }
+    }
+  }
+  return null
+}
 /**
  *  finds the rnearest point to current mouse location (loc)
  * @param {Point} loc
