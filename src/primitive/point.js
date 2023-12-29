@@ -18,7 +18,7 @@ export default class Point {
   /**
    * draw function for a point
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
-   * @param {object} attributes
+   * @param {object} attributes optional styling attributes
    * @param {number} attributes.size size for individual points
    * @param {string} attributes.color color
    * @param {boolean} attributes.outlined is outlined

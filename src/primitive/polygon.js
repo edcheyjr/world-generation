@@ -10,7 +10,7 @@ export default class Polygon {
   /**
    * draw function for a polygon
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
-   * @param {object} attributes
+   * @param {object} attributes optional styling attributes
    * @param {number} attributes.strokeColor  stroke color
    * @param {string} attributes.fillColor bg color
    * @param {number} attributes.lineWidth bg color

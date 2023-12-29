@@ -17,7 +17,7 @@ export default class Segment {
   /**
    * draw function for a segment
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
-   * @param {object} attributes segments additional attributes
+   * @param {object} attributes segments optional additional attributes
    * @param {number} attributes.width thickness of the line
    * @param {string} attributes.color  line/stroke color
    * @param {number[]} attributes.dashed  array of dash size and gap size [dash, gap]
