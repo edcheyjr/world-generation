@@ -1,6 +1,7 @@
 import { Graph } from './src/math/graph.js'
 import ViewPort from './src/viewport.js'
 import GraphEditor from './src/graphEditor.js'
+import Envelope from './src/primitive/envelope.js'
 
 const CONTEXT_TYPE = '2d'
 const GRAPH_STORE_NAME = 'graph'
@@ -34,6 +35,11 @@ const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
 
 function animate() {
   viewport.reset(ctx)
+  if (graph.segments.length > 0) {
+    for (let seg of graph.segments) {
+      new Envelope(seg, 70).draw(ctx)
+    }
+  }
   graphEditor.display()
   requestAnimationFrame(animate)
 }
