@@ -1,7 +1,7 @@
 import { Graph } from './src/math/graph.js'
 import ViewPort from './src/viewport.js'
 import GraphEditor from './src/graphEditor.js'
-import Envelope from './src/primitive/envelope.js'
+import World from './src/world.js'
 import { getItem, setItem } from './src/helpers/localStorageAcess.js'
 
 const CONTEXT_TYPE = '2d'
@@ -32,14 +32,13 @@ const graphInfo = getItem(GRAPH_STORE_NAME, 'object')
 const graph = graphInfo ? Graph.load(graphInfo) : new Graph()
 const viewport = new ViewPort(canvasOneEl)
 const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
+const world = new World(graph)
 
 function animate() {
   viewport.reset(ctx)
-  if (graph.segments.length > 0) {
-    for (let seg of graph.segments) {
-      new Envelope(seg, 80, 20).draw(ctx)
-    }
-  }
+
+  world.generate()
+  world.draw(ctx)
   graphEditor.display()
   requestAnimationFrame(animate)
 }
