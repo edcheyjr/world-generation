@@ -1,6 +1,7 @@
 import { Graph } from './math/graph.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
+import Point from './primitive/point.js'
 
 /**
  * World generation and display
@@ -13,7 +14,7 @@ export default class World {
    * @param {number} roadWidth road width
    * @param {number} roadRoundness road roundness
    */
-  constructor(graph, roadWidth = 100, roadRoundness = 5) {
+  constructor(graph, roadWidth = 100, roadRoundness = 4) {
     this.graph = graph
     this.roadWidth = roadWidth
     this.roadRoundness = roadRoundness
@@ -24,7 +25,7 @@ export default class World {
     this.envelopes = []
     /**
      * intersection points of polygons
-     * @type {Points[]}
+     * @type {Point[]}
      */
     this.intersections = []
   }
@@ -58,6 +59,9 @@ export default class World {
   draw(ctx, {} = {}) {
     for (let env of this.envelopes) {
       env.draw(ctx)
+    }
+    for (let int of this.intersections) {
+      int.draw(ctx, { color: 'rgba(221, 21, 22, 1)' })
     }
   }
 }

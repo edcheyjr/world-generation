@@ -13,9 +13,9 @@ export default class Polygon {
   constructor(points) {
     this.points = points
     this.segments = []
-    for (let i = 0; i <= points.length; i++) {
+    for (let i = 1; i <= points.length; i++) {
       this.segments.push(
-        new Segment(points[(i - 1, points[i % points.length])]) //continuously loop through the points of the polygon
+        new Segment(points[i - 1], points[i % points.length]) //continuously loop through the points of the polygon
       )
     }
   }
