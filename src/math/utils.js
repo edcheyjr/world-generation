@@ -1,6 +1,15 @@
 import Point from '../primitive/point.js'
 
 /**
+ * Returns tangent angle given a vector point(x,y) which is difference  between two vector points
+ * @param {Point} points_diff
+ * @return {number} angle in radians
+ */
+export function angle(points_diff) {
+  return Math.atan(points_diff.y, points_diff.x)
+}
+
+/**
  * finds the addition between two point vectors
  * @param {Point} p1 vector
  * @param {Point} p2 vector
