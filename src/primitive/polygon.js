@@ -27,7 +27,28 @@ export default class Polygon {
    * @returns {Points[]} interections points
    */
   static break(poly1, poly2) {
-    // TODO
+    const seg1 = poly1.segments
+    const seg2 = poly2.segments
+    /**
+     * @type {Point[]}
+     */
+    const intersections = []
+
+    for (let i = 0; i < seg1.length; i++) {
+      for (let j = 0; j < seg2.length; j++) {
+        const int = getIntersection(
+          seg1[i].p1,
+          seg1[i].p2,
+          seg2[j].p1,
+          seg2[j].p2
+        )
+        if (int && int.offset != 1 && int.offset != 0) {
+          const newInterectionPoint = new Point(int.x, int.y)
+          intersections.push(newInterectionPoint)
+        }
+      }
+    }
+    return intersections
   }
 
   /**
