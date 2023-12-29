@@ -61,7 +61,7 @@ export default class World {
       env.draw(ctx)
     }
     for (let int of this.intersections) {
-      int.draw(ctx, { color: 'rgba(221, 21, 22, 1)' })
+      int.draw(ctx, { color: 'rgba(221, 21, 22, 1)', size: 10 })
     }
   }
 }
