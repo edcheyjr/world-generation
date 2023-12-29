@@ -1,6 +1,8 @@
 import Point from './primitive/point.js'
 import { subract, add, scale } from './math/utils.js'
+import { getItem, setItem } from './helpers/localStorageAcess.js'
 
+const ZOOM_LEVEL = 'zoom-level'
 export default class Viewport {
   /**
    * Viewport
@@ -9,7 +11,7 @@ export default class Viewport {
    */
   constructor(canvas) {
     this.canvas = canvas
-    this.zoom = 1
+    this.zoom = getItem(ZOOM_LEVEL, 'number') || 1
     this.center = new Point(canvas.width / 2, canvas.height / 2)
     this.globalOffset = scale(this.center, -1)
     this.zoomAttir = {
@@ -80,6 +82,7 @@ export default class Viewport {
       this.zoomAttir.minZoom,
       Math.min(this.zoomAttir.maxZoom, this.zoom)
     ) // zoom cap between min and max zooms
+    setItem(ZOOM_LEVEL, this.zoom) // persist current zoom
   }
 
   /**

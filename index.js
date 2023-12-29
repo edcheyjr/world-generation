@@ -2,6 +2,7 @@ import { Graph } from './src/math/graph.js'
 import ViewPort from './src/viewport.js'
 import GraphEditor from './src/graphEditor.js'
 import Envelope from './src/primitive/envelope.js'
+import { getItem, setItem } from './src/helpers/localStorageAcess.js'
 
 const CONTEXT_TYPE = '2d'
 const GRAPH_STORE_NAME = 'graph'
@@ -18,7 +19,6 @@ const saveBtnEl = document.getElementById('save-btn')
  */
 const ctx = canvasOneEl.getContext(CONTEXT_TYPE, CONTEXT_ATTRIBUTES)
 
-const graphString = localStorage.getItem(GRAPH_STORE_NAME)
 /**
  * graph info
  * @type {{
@@ -28,7 +28,7 @@ const graphString = localStorage.getItem(GRAPH_STORE_NAME)
  * } | null
  * }
  */
-const graphInfo = graphString ? JSON.parse(graphString) : null
+const graphInfo = getItem(GRAPH_STORE_NAME, 'object')
 const graph = graphInfo ? Graph.load(graphInfo) : new Graph()
 const viewport = new ViewPort(canvasOneEl)
 const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
@@ -37,7 +37,7 @@ function animate() {
   viewport.reset(ctx)
   if (graph.segments.length > 0) {
     for (let seg of graph.segments) {
-      new Envelope(seg, 70).draw(ctx)
+      new Envelope(seg, 80, 20).draw(ctx)
     }
   }
   graphEditor.display()
@@ -61,7 +61,7 @@ clearBtnEl.addEventListener('click', dispose)
  * saves graph content
  */
 function save() {
-  localStorage.setItem(GRAPH_STORE_NAME, JSON.stringify(graph))
+  setItem(GRAPH_STORE_NAME, graph)
   console.log('sucessfully saved graph')
 }
 saveBtnEl.addEventListener('click', save)
