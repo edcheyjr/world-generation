@@ -1,4 +1,8 @@
 import Point from './point.js'
+
+/**
+ * primtive shape bulder class
+ */
 export default class Polygon {
   /**
    * Polygon shape

@@ -1,6 +1,10 @@
 import { angle, translate, subract } from '../math/utils.js'
 import Point from './point.js'
 import Polygon from './polygon.js'
+
+/**
+ * primtive shape bulder class
+ */
 export default class Envelope {
   /**
    * a polygon structure around points and it's segments

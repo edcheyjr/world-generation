@@ -3,6 +3,9 @@ import { subract, add, scale } from './math/utils.js'
 import { getItem, setItem } from './helpers/localStorageAcess.js'
 
 const ZOOM_LEVEL = 'zoom-level'
+/**
+ * handles viewport abilities
+ */
 export default class Viewport {
   /**
    * Viewport

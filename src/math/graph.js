@@ -1,6 +1,8 @@
 import Segment from '../primitive/segment.js'
 import Point from '../primitive/point.js'
-
+/**
+ * Graph Builder
+ */
 export class Graph {
   /**
    * Graph Builder G = (V, E)

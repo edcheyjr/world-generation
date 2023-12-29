@@ -1,14 +1,14 @@
 import Point from './point.js'
 
+/**
+ * primtive shape bulder class
+ */
 export default class Segment {
   /**
    * Draw joint between two points p1 and p2
    * ______________________________________
-   *
    * @param {Point} p1 point one
    * @param {Point} p2 point two
-   *
-   * @return {Segment} segment class object
    */
   constructor(p1, p2) {
     this.p1 = p1

@@ -1,3 +1,6 @@
+/**
+ * primtive shape bulder class
+ */
 export default class Point {
   /**
    * Draw a point on canvas
@@ -6,9 +9,6 @@ export default class Point {
    *
    * @param {number} x some position from 0 to canvas width (X axis)
    * @param {number} y some position from 0 to canvas height (Y axis)
-   *
-   *
-   * @return { Point} a new point object
    */
   constructor(x, y) {
     this.x = x
