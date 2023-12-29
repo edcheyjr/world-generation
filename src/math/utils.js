@@ -1,11 +1,12 @@
 import Point from '../primitive/point.js'
 
+export { angle, add, subract, scale, getNearestPoint, translate }
 /**
  * Returns tangent angle given a vector point(x,y) which is difference  between two vector points
  * @param {Point} points_diff
  * @return {number} angle in radians
  */
-export function angle(points_diff) {
+function angle(points_diff) {
   return Math.atan(points_diff.y, points_diff.x)
 }
 
@@ -15,7 +16,7 @@ export function angle(points_diff) {
  * @param {Point} p2 vector
  * @returns {Point} vector
  */
-export function add(p1, p2) {
+function add(p1, p2) {
   return new Point(p1.x + p2.x, p1.y + p2.y)
 }
 
@@ -25,7 +26,7 @@ export function add(p1, p2) {
  * @param {Point} p2 vector
  * @returns {Point} vector
  */
-export function subract(p1, p2) {
+function subract(p1, p2) {
   return new Point(p1.x - p2.x, p1.y - p2.y)
 }
 
@@ -35,7 +36,7 @@ export function subract(p1, p2) {
  * @param {number} scaler scale value
  * @returns {Point} vector
  */
-export function scale(p1, scaler) {
+function scale(p1, scaler) {
   return new Point(p1.x * scaler, p1.y * scaler)
 }
 
@@ -46,11 +47,7 @@ export function scale(p1, scaler) {
  * @param {number} threshold
  * @returns {Point}
  */
-export function getNearestPoint(
-  loc,
-  points,
-  threshold = Number.MAX_SAFE_INTEGER
-) {
+function getNearestPoint(loc, points, threshold = Number.MAX_SAFE_INTEGER) {
   let minDist = Number.MAX_SAFE_INTEGER
   let nearestPoint = null
   for (let point of points) {
@@ -71,4 +68,18 @@ export function getNearestPoint(
  */
 function distance(p1, p2) {
   return Math.hypot(p1.x - p2.x, p1.y - p2.y)
+}
+
+/**
+ * Translate a point location by distance relative to alpha
+ * @param {Point} loc point to translate
+ * @param {number} alpha angle to translate relative
+ * @param {number} offset offset distance value
+ * @return {Point} new translated point
+ */
+function translate(loc, alpha, offset) {
+  return new Point(
+    loc.x + Math.cos(alpha) * offset,
+    loc.y + Math.sin(alpha) * offset
+  )
 }
