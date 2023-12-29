@@ -1,6 +1,6 @@
 import Point from '../primitive/point.js'
 
-export { angle, add, subract, scale, getNearestPoint, translate }
+  lerp,
 /**
  * Returns tangent angle given a vector point(x,y) which is difference  between two vector points
  * @param {Point} points_diff
@@ -38,6 +38,35 @@ function subract(p1, p2) {
  */
 function scale(p1, scaler) {
   return new Point(p1.x * scaler, p1.y * scaler)
+}
+
+/**
+ * interpolation function A.k.a lerp
+ *
+ * --------------------------------
+ *
+ * @description The term "lerp" stands for linear interpolation. It is a mathematical function commonly used in computer graphics, animation, and other areas to interpolate (estimate values between two known values) linearly between two endpoints. [more info](https://en.wikipedia.org/wiki/Linear_interpolation)
+ * > The formula for linear interpolation is:
+ * > ``lerp(a,b,t)=(1−t)⋅a+t⋅b``
+ * ________________________________________
+ *
+ * @param {number} A The starting value.
+ * @param {number} B  he ending value.
+ * @param {number} t  A parameter that represents the interpolation factor. It ranges from 0 to 1, where 0 corresponds to the starting value, 1 corresponds to the ending value, and values in between represent the interpolation between the two
+ * ________________________________________
+ *
+ * @returns {int} position(number) between postions A and B depending with the factor t
+ *
+ * @example
+ * let startValue = 10;
+ * let endValue = 20;
+ * let interpolationFactor = 0.5; // Interpolate halfway between start and end
+ * let result = lerp(startValue, endValue, interpolationFactor);
+ * console.log(result); // Output: 15
+ *
+ */
+function lerp(A, B, t) {
+  return A + (B - A) * t
 }
 
 /**
