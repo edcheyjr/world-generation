@@ -55,7 +55,7 @@ export function getNearestPoint(
 }
 
 /**
- * finds the distance between mouse loc and the current point
+ * finds the distance between two points
  * @param {Point} p1 point 1
  * @param {Point} p2 point 2
  * @return {number} distance between the points
