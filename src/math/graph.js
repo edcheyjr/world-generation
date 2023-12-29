@@ -9,7 +9,7 @@ export class Graph {
    * =======================
    * ______________________________________________________________________________________________
    *
-   *  graph is data structure use to store 2D space consist of vertices and edges learn more here
+   *  graph is data structure use to store 2D space consist of vertices and edges [learn more](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics) here
    *  https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
    *
    *  > Uses include:
