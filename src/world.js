@@ -1,5 +1,6 @@
 import { Graph } from './math/graph.js'
 import Envelope from './primitive/envelope.js'
+import Polygon from './primitive/polygon.js'
 
 /**
  * World generation and display
@@ -17,9 +18,15 @@ export default class World {
     this.roadWidth = roadWidth
     this.roadRoundness = roadRoundness
     /**
+     * envelopes info
      * @type {Envelope[]}
      */
     this.envelopes = []
+    /**
+     * intersection points of polygons
+     * @type {Points[]}
+     */
+    this.intersections = []
   }
 
   /**
@@ -39,6 +46,10 @@ export default class World {
         )
       }
     }
+    this.intersections = Polygon.break(
+      this.envelopes[0].poly,
+      this.envelopes[1].poly
+    )
   }
   /**
    * draw function

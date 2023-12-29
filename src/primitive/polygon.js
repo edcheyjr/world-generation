@@ -12,6 +12,18 @@ export default class Polygon {
     this.points = points
   }
   /**
+   * gets the intersections btwn two polygons
+   * _______________________________________
+   *
+   * @param {Polygon} poly1 polygon one info
+   * @param {Polygon} poly2 polygon two info
+   * @returns {Points[]} interections points
+   */
+  static break(poly1, poly2) {
+    // TODO
+  }
+
+  /**
    * draw function for a polygon
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
    * @param {object} attributes optional styling attributes
