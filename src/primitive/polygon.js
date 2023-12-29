@@ -1,4 +1,5 @@
 import Point from './point.js'
+import Segment from './segment.js'
 
 /**
  * primtive shape bulder class
@@ -10,6 +11,12 @@ export default class Polygon {
    */
   constructor(points) {
     this.points = points
+    this.segments = []
+    for (let i = 0; i <= points.length; i++) {
+      this.segments.push(
+        new Segment(points[(i - 1, points[i % points.length])]) //continuously loop through the points of the polygon
+      )
+    }
   }
   /**
    * gets the intersections btwn two polygons
