@@ -33,11 +33,16 @@ export default class Envelope {
     const alpha = angle(subract(p1, p2))
     const alpha_cw = alpha + Math.PI / 2
     const alpha_ccw = alpha - Math.PI / 2
-    const p1_cw = translate(p1, alpha_cw, radius)
-    const p2_cw = translate(p2, alpha_cw, radius)
-    const p2_ccw = translate(p2, alpha_ccw, radius)
-    const p1_ccw = translate(p1, alpha_ccw, radius)
 
-    return new Polygon([p1_cw, p2_cw, p2_ccw, p1_ccw])
+    const points = []
+    const step = Math.PI / 10
+    for (let i = alpha_ccw; i <= alpha_cw; i += step) {
+      points.push(translate(p1, i, radius))
+    }
+    for (let i = alpha_ccw; i <= alpha_cw; i += step) {
+      points.push(translate(p2, Math.PI + i, radius))
+    }
+
+    return new Polygon(points)
   }
 }

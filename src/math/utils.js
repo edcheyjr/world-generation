@@ -7,7 +7,7 @@ export { angle, add, subract, scale, getNearestPoint, translate }
  * @return {number} angle in radians
  */
 function angle(points_diff) {
-  return Math.atan(points_diff.y, points_diff.x)
+  return Math.atan2(points_diff.y, points_diff.x)
 }
 
 /**
