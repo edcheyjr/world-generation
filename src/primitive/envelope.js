@@ -11,10 +11,11 @@ export default class Envelope {
    * @param {object} skeleton points  making the envelope
    * @param {Point} skeleton.p1 point one
    * @param {Point} skeleton.p2 point two
-   * @param {number} width thickness of the envelope
-   * @param {number} roundness how rounded the edges of the envelope should be
+   * @param {object} attributes envelope attributes
+   * @param {number | undefined} attributes.width thickness of the envelope
+   * @param {number | undefined} attributes.roundness how rounded the edges of the envelope should be
    */
-  constructor(skeleton, width = 80, roundness = 1) {
+  constructor(skeleton, { width = 80, roundness = 1 } = {}) {
     this.skeleton = skeleton
     this.poly = this.#generatePolygon(width, roundness)
   }
