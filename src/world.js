@@ -47,10 +47,12 @@ export default class World {
         )
       }
     }
-    this.intersections = Polygon.break(
-      this.envelopes[0].poly,
-      this.envelopes[1].poly
-    )
+    if (this.envelopes.length > 1) {
+      this.intersections = Polygon.break(
+        this.envelopes[0].poly,
+        this.envelopes[1].poly
+      )
+    }
   }
   /**
    * draw function
