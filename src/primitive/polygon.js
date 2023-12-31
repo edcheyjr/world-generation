@@ -100,6 +100,39 @@ export default class Polygon {
     segs.splice(index + 1, 0, new Segment(point, aux)) //remove that segment and replace with the new segment obvious ignoring or "cleaning" the inside segment
     return segs
   }
+  /**
+   * does this it contain this segment
+   * @param { Segment} seg
+   * @returns { boolean}
+   */
+  containsSegment(seg) {
+    const midPoint = average(seg.p1, seg.p2)
+    return this.containsPoint(midPoint)
+  }
+  /**
+   * polygon contains point algorithm
+   * --------------------------------
+   *
+   * does point lives with this polygon
+   * @param {Point} point
+   * @return {boolean}
+   */
+  containsPoint(point) {
+    //testing random outer point
+    const outerPoint = new Point(-1500, -1500)
+    let intersectionCount = 0
+    for (const seg of this.segments) {
+      const intersects = getIntersection(
+        { A: outerPoint, B: point },
+        { C: seg.p1, D: seg.p2 }
+      )
+      if (intersects) {
+        intersectionCount++
+      }
+    }
+    return intersectionCount % 2 == 1
+  }
+
   drawSegments(ctx) {
     for (const seg of this.segments) {
       seg.draw(ctx, { color: getRandomColor(), width: 5 })
