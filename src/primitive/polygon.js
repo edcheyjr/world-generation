@@ -1,6 +1,7 @@
 import Point from './point.js'
 import Segment from './segment.js'
 import { getIntersection } from '../math/utils.js'
+import { getRandomColor } from '../helpers/getRandomColor.js'
 
 /**
  * primtive shape bulder class
@@ -17,6 +18,17 @@ export default class Polygon {
       this.segments.push(
         new Segment(points[i - 1], points[i % points.length]) //continuously loop through the points of the polygon
       )
+    }
+  }
+  /**
+   * break for all polygons
+   * @param {Polygon[]} polys
+   */
+  static multiBreak(polys) {
+    for (let i = 0; i < polys.length - 1; i++) {
+      for (let j = i + 1; i < polys.length; i++) {
+        Polygon.break(polys[i], polys[j])
+      }
     }
   }
   /**
@@ -45,11 +57,30 @@ export default class Polygon {
         )
         if (int && int.offset != 1 && int.offset != 0) {
           const newInterectionPoint = new Point(int.x, int.y)
-          intersections.push(newInterectionPoint)
+          this.#splitSegAtIntersection(seg1, i, newInterectionPoint) // first segment
+          this.#splitSegAtIntersection(seg2, j, newInterectionPoint) // second segment intersecting with the first
         }
       }
     }
-    return intersections
+  }
+
+  /**
+   * Split segment at a given intersection point and add them to the segments array
+   * @param {Segment[]} segs the segments array
+   * @param {number} index current index
+   * @param {Point} point intersection point
+   * @return {Segment[]} return the modified segments array
+   */
+  static #splitSegAtIntersection(segs, index, point) {
+    let aux = segs[index].p2
+    segs[index].p2 = point // replace the last point of the current segment with new point
+    segs.splice(index + 1, 0, new Segment(point, aux)) //remove that segment and replace with the new segment obvious ignoring or "cleaning" the inside segment
+    return segs
+  }
+  drawSegments(ctx) {
+    for (const seg of this.segments) {
+      seg.draw(ctx, { color: getRandomColor(), width: 5 })
+    }
   }
 
   /**
