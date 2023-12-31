@@ -1,6 +1,6 @@
 import Point from './point.js'
 import Segment from './segment.js'
-import { getIntersection } from '../math/utils.js'
+import { average, getIntersection } from '../math/utils.js'
 import { getRandomColor } from '../helpers/getRandomColor.js'
 
 /**
@@ -73,10 +73,8 @@ export default class Polygon {
     for (let i = 0; i < seg1.length; i++) {
       for (let j = 0; j < seg2.length; j++) {
         const int = getIntersection(
-          seg1[i].p1,
-          seg1[i].p2,
-          seg2[j].p1,
-          seg2[j].p2
+          { A: seg1[i].p1, B: seg1[i].p2 },
+          { C: seg2[j].p1, D: seg2[j].p2 }
         )
         if (int && int.offset != 1 && int.offset != 0) {
           const newInterectionPoint = new Point(int.x, int.y)
