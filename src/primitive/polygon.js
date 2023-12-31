@@ -32,6 +32,29 @@ export default class Polygon {
     }
   }
   /**
+   * unionize all polygons
+   * @param {Polygon[]} polys
+   */
+  static union(polys) {
+    Polygon.multiBreak(polys)
+    for (let i = 0; i < polys.length; i++) {
+      for (let seg of polys[i].segments) {
+        let keep = true // do we keep this segment ?
+        // loop through all other polygons to find a matching seg
+        for (let j = 0; j < polys.length; i++) {
+          // but not the same polygon
+          if (i != j) {
+            if (polys[j].containsSegment(seg)) {
+              // found matching segment
+              keep = false
+              break
+            }
+          }
+        }
+      }
+    }
+  }
+  /**
    * gets the intersections btwn two polygons
    * _______________________________________
    *
