@@ -1,6 +1,7 @@
 import Point from '../primitive/point.js'
 
 export {
+  average,
   angle,
   add,
   subract,
@@ -10,6 +11,16 @@ export {
   getIntersection,
   lerp,
 }
+/**
+ * finds avarage loc of two point and position a new point in that location
+ * @param {Point} p1 point 2
+ * @param {Point} p2 point 1
+ * @returns {Point} midpoint
+ */
+function average(p1, p2) {
+  return new Point(p1.x + p2.x * 0.5, p1.y + p2.y * 0.5)
+}
+
 /**
  * Returns tangent angle given a vector point(x,y) which is difference  between two vector points
  * @param {Point} points_diff
@@ -85,14 +96,16 @@ function lerp(A, B, t) {
  * @description takes vectors points {A} to {B} AND {C} to {D} and find where they intersect otherwise returns null if not co-ordinates
  * _____________________________________
  *
- * @param {Point} A point a
- * @param {Point} B point b
- * @param {Point} C point c
- * @param {Point} D point d
+ * @param {object} lineOne A to B
+ * @param {Point} lineOne.A point A
+ * @param {Point} lineOne.B point B
+ * @param {object} lineTwo C to D
+ * @param {Point} lineTwo.C point C
+ * @param {Point} lineTwo.D point D
  *
  * @returns {{x:number, y:number, offset:number} | null} with x,y point of intersect or null between x and y and the offset
  */
-function getIntersection(A, B, C, D) {
+function getIntersection({ A, B }, { C, D }) {
   const tTop = (D.x - C.x) * (A.y - C.y) - (D.y - C.y) * (A.x - C.x)
   const uTop = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y)
   const bottom = (D.y - C.y) * (B.x - A.x) - (D.x - C.x) * (B.y - A.y)
