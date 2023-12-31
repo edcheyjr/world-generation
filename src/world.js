@@ -23,11 +23,6 @@ export default class World {
      * @type {Envelope[]}
      */
     this.envelopes = []
-    /**
-     * intersection points of polygons
-     * @type {Point[]}
-     */
-    this.intersections = []
   }
 
   /**
@@ -48,10 +43,7 @@ export default class World {
       }
     }
     if (this.envelopes.length > 1) {
-      this.intersections = Polygon.break(
-        this.envelopes[0].poly,
-        this.envelopes[1].poly
-      )
+      Polygon.multiBreak(this.envelopes.map((env) => env.poly)) //breaks polygon for envelopes
     }
   }
   /**
@@ -61,9 +53,6 @@ export default class World {
   draw(ctx, {} = {}) {
     for (let env of this.envelopes) {
       env.draw(ctx)
-    }
-    for (let int of this.intersections) {
-      int.draw(ctx, { color: 'rgba(221, 21, 22, 1)', size: 10 })
     }
   }
 }
