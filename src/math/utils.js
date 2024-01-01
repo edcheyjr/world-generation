@@ -18,7 +18,7 @@ export {
  * @returns {Point} midpoint
  */
 function average(p1, p2) {
-  return new Point(p1.x + p2.x * 0.5, p1.y + p2.y * 0.5)
+  return new Point((p1.x + p2.x) * 0.5, (p1.y + p2.y) * 0.5)
 }
 
 /**
