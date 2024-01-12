@@ -14,10 +14,20 @@ export default class World {
    * @param {number} roadWidth road width
    * @param {number} roadRoundness road roundness
    */
-  constructor(graph, roadWidth = 100, roadRoundness = 10) {
+  constructor(
+    graph,
+    roadWidth = 100,
+    roadRoundness = 10,
+    buildingWidth = 150,
+    buildingMinLength = 150,
+    spacing = 50
+  ) {
     this.graph = graph
     this.roadWidth = roadWidth
     this.roadRoundness = roadRoundness
+    this.buildingWidth = buildingWidth
+    this.buildingMinLength = buildingMinLength
+    this.spacing = spacing
     /**
      * envelopes info
      * @type {Envelope[]}
@@ -28,6 +38,32 @@ export default class World {
      * @type {Segment[]}
      */
     this.roadBorders = []
+    /**
+     * buildings Store
+     * @type {Envelope[]}
+     */
+    this.buildings = []
+  }
+
+  #generateBuildings() {
+    const tmpEnvelopes = []
+    //loop through all the graph segments and outer envelope which are the intial building block of houses/building along the roads
+    for (let seg of this.graph.segments) {
+      const envelope = new Envelope(seg, {
+        width: this.roadWidth + this.buildingWidth + this.spacing * 2,
+        roundness: this.roadRoundness,
+      })
+      tmpEnvelopes.push(envelope)
+    }
+    let guides = Polygon.union(tmpEnvelopes.map((env) => env.poly))
+    for (let i = 0; i < guides.length; i++) {
+      const seg = guides[i]
+      if (seg.length() < this.buildingMinLength) {
+        guides.splice(i, 1)
+        i-- // return to the same index as the array shifted by one
+      }
+    }
+    return guides
   }
 
   /**
@@ -48,20 +84,32 @@ export default class World {
       }
     }
     if (this.envelopes.length > 1) {
-      // Polygon.multiBreak(this.envelopes.map((env) => env.poly))
       this.roadBorders = Polygon.union(this.envelopes.map((env) => env.poly))
     }
+    this.buildings = this.#generateBuildings()
   }
   /**
    * draw function
    * @param {CanvasRenderingContext2D} ctx
    */
   draw(ctx, {} = {}) {
+    //road tarmac
     for (let env of this.envelopes) {
-      env.draw(ctx, { fillColor: '#bbb', strokeColor: '#bbb' })
+      env.draw(ctx, { fillColor: '#bbb', strokeColor: '#bbb', lineWidth: 20 })
     }
+    // road yellow lines
+    for (let seg of this.graph.segments) {
+      seg.draw(ctx, { color: 'white', width: 4, dashed: [8, 10] })
+    }
+
+    // road borders
     for (let border of this.roadBorders) {
       border.draw(ctx, { color: 'white', width: 4 })
+    }
+
+    // building rendering
+    for (let bld of this.buildings) {
+      bld.draw(ctx)
     }
   }
 }

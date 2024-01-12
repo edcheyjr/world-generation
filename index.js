@@ -39,6 +39,7 @@ function animate() {
   world.generate()
   world.draw(ctx)
 
+  ctx.globalAlpha = 0.4
   graphEditor.display()
   requestAnimationFrame(animate)
 }
