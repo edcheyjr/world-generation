@@ -1,7 +1,7 @@
 import { Graph } from './math/graph.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
-import Point from './primitive/point.js'
+import Segment from './primitive/segment.js'
 
 /**
  * World generation and display
@@ -14,7 +14,7 @@ export default class World {
    * @param {number} roadWidth road width
    * @param {number} roadRoundness road roundness
    */
-  constructor(graph, roadWidth = 100, roadRoundness = 4) {
+  constructor(graph, roadWidth = 100, roadRoundness = 10) {
     this.graph = graph
     this.roadWidth = roadWidth
     this.roadRoundness = roadRoundness
@@ -23,6 +23,11 @@ export default class World {
      * @type {Envelope[]}
      */
     this.envelopes = []
+    /**
+     * roadborders made of union of segments
+     * @type {Segment[]}
+     */
+    this.roadBorders = []
   }
 
   /**
@@ -43,7 +48,8 @@ export default class World {
       }
     }
     if (this.envelopes.length > 1) {
-      Polygon.multiBreak(this.envelopes.map((env) => env.poly)) //breaks polygon for envelopes
+      // Polygon.multiBreak(this.envelopes.map((env) => env.poly))
+      this.roadBorders = Polygon.union(this.envelopes.map((env) => env.poly))
     }
   }
   /**
@@ -52,7 +58,10 @@ export default class World {
    */
   draw(ctx, {} = {}) {
     for (let env of this.envelopes) {
-      env.draw(ctx)
+      env.draw(ctx, { fillColor: '#bbb', strokeColor: '#bbb' })
+    }
+    for (let border of this.roadBorders) {
+      border.draw(ctx, { color: 'white', width: 4 })
     }
   }
 }

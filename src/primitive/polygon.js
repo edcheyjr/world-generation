@@ -20,28 +20,32 @@ export default class Polygon {
       )
     }
   }
+
   /**
    * break for all polygons
    * @param {Polygon[]} polys
    */
   static multiBreak(polys) {
     for (let i = 0; i < polys.length - 1; i++) {
-      for (let j = i + 1; i < polys.length; i++) {
+      for (let j = i + 1; j < polys.length; j++) {
         Polygon.break(polys[i], polys[j])
       }
     }
   }
   /**
    * unionize all polygons
-   * @param {Polygon[]} polys
+   * @param {Polygon[]} polys polygons array
+   * @return {Segment[]} segment of all polygons unionizes to one
    */
   static union(polys) {
     Polygon.multiBreak(polys)
+    const keepSegments = []
     for (let i = 0; i < polys.length; i++) {
       for (let seg of polys[i].segments) {
-        let keep = true // do we keep this segment ?
+        // console.log('seg', seg)
+        let keep = true // do we keep this segment?
         // loop through all other polygons to find a matching seg
-        for (let j = 0; j < polys.length; i++) {
+        for (let j = 0; j < polys.length; j++) {
           // but not the same polygon
           if (i != j) {
             if (polys[j].containsSegment(seg)) {
@@ -51,9 +55,14 @@ export default class Polygon {
             }
           }
         }
+        if (keep) {
+          keepSegments.push(seg)
+        }
       }
     }
+    return keepSegments
   }
+
   /**
    * gets the intersections btwn two polygons
    * _______________________________________
@@ -65,10 +74,7 @@ export default class Polygon {
   static break(poly1, poly2) {
     const seg1 = poly1.segments
     const seg2 = poly2.segments
-    /**
-     * @type {Point[]}
-     */
-    const intersections = []
+    const intersections = [] //TODO remove not used
 
     for (let i = 0; i < seg1.length; i++) {
       for (let j = 0; j < seg2.length; j++) {
@@ -78,6 +84,14 @@ export default class Polygon {
         )
         if (int && int.offset != 1 && int.offset != 0) {
           const newInterectionPoint = new Point(int.x, int.y)
+
+          // let aux = seg1[i].p2
+          // seg1[i].p2 = newInterectionPoint
+          // seg1.splice(i + 1, 0, new Segment(newInterectionPoint, aux))
+
+          // aux = seg2[j].p2
+          // seg2[j].p2 = newInterectionPoint
+          // seg2.splice(j + 1, 0, new Segment(newInterectionPoint, aux))
           this.#splitSegAtIntersection(seg1, i, newInterectionPoint) // first segment
           this.#splitSegAtIntersection(seg2, j, newInterectionPoint) // second segment intersecting with the first
         }
@@ -98,8 +112,9 @@ export default class Polygon {
     segs.splice(index + 1, 0, new Segment(point, aux)) //remove that segment and replace with the new segment obvious ignoring or "cleaning" the inside segment
     return segs
   }
+
   /**
-   * does this it contain this segment
+   * does this it contain segment seg
    * @param { Segment} seg
    * @returns { boolean}
    */
@@ -115,9 +130,10 @@ export default class Polygon {
    * @param {Point} point
    * @return {boolean}
    */
+
   containsPoint(point) {
-    //testing random outer point
-    const outerPoint = new Point(-1500, -1500)
+    //FIXME testing random outer point would be better which is bound to be sure no one will reach it and also not too far
+    const outerPoint = new Point(-2000, -2000)
     let intersectionCount = 0
     for (const seg of this.segments) {
       const intersects = getIntersection(
@@ -131,9 +147,12 @@ export default class Polygon {
     return intersectionCount % 2 == 1
   }
 
+  /**
+   * @param {*} ctx
+   */
   drawSegments(ctx) {
     for (const seg of this.segments) {
-      seg.draw(ctx, { color: getRandomColor(), width: 5 })
+      seg.draw(ctx, { color: getRandomColor(), width: 10 })
     }
   }
 
@@ -142,8 +161,8 @@ export default class Polygon {
    * @param {CanvasRenderingContext2D} ctx 2D canvas context
    * @param {object} attributes optional styling attributes
    * @param {number} attributes.strokeColor  stroke color
+   * @param {number} attributes.lineWidth stroke width
    * @param {string} attributes.fillColor bg color
-   * @param {number} attributes.lineWidth bg color
    */
 
   draw(

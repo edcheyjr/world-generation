@@ -20,14 +20,6 @@ export default class Envelope {
     this.poly = this.#generatePolygon(width, roundness)
   }
   /**
-   * draw function
-   * @param {CanvasRenderingContext2D} ctx context
-   * @param {object} attributes optional styling attributes
-   */
-  draw(ctx, {} = {}) {
-    this.poly.draw(ctx)
-  }
-  /**
    * envelope polygon generator
    * @param {number} width
    * @param {number} roundness
@@ -52,5 +44,17 @@ export default class Envelope {
     }
 
     return new Polygon(points)
+  }
+
+  /**
+   * draw function for the envelope class
+   * @param {CanvasRenderingContext2D} ctx context
+   * @param {object} attributes optional styling attributes
+   * @param {number} attributes.strokeColor  stroke color
+   * @param {number} attributes.lineWidth stroke width
+   * @param {string} attributes.fillColor bg color
+   */
+  draw(ctx, attributes = {}) {
+    this.poly.draw(ctx, attributes)
   }
 }

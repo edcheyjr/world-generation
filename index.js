@@ -36,15 +36,13 @@ const world = new World(graph)
 
 function animate() {
   viewport.reset(ctx)
-
   world.generate()
   world.draw(ctx)
+
   graphEditor.display()
   requestAnimationFrame(animate)
 }
 animate()
-// console.log('ponts', graph.points)
-// console.log('segments', graph.segments)
 console.warn('Everything in Order!')
 
 /**
