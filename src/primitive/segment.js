@@ -1,4 +1,5 @@
 import Point from './point.js'
+import { distance } from '../math/utils.js'
 
 /**
  * primtive shape bulder class
@@ -49,5 +50,11 @@ export default class Segment {
    */
   includes(point) {
     return this.p1.equals(point) || this.p2.equals(point)
+  }
+  /**
+   * Finds the length of a segment
+   */
+  length() {
+    return distance(this.p1, this.p2)
   }
 }

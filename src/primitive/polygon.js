@@ -84,14 +84,6 @@ export default class Polygon {
         )
         if (int && int.offset != 1 && int.offset != 0) {
           const newInterectionPoint = new Point(int.x, int.y)
-
-          // let aux = seg1[i].p2
-          // seg1[i].p2 = newInterectionPoint
-          // seg1.splice(i + 1, 0, new Segment(newInterectionPoint, aux))
-
-          // aux = seg2[j].p2
-          // seg2[j].p2 = newInterectionPoint
-          // seg2.splice(j + 1, 0, new Segment(newInterectionPoint, aux))
           this.#splitSegAtIntersection(seg1, i, newInterectionPoint) // first segment
           this.#splitSegAtIntersection(seg2, j, newInterectionPoint) // second segment intersecting with the first
         }

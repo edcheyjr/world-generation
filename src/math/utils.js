@@ -124,7 +124,7 @@ function getIntersection({ A, B }, { C, D }) {
   return null
 }
 /**
- *  finds the rnearest point to current mouse location (loc)
+ *  finds the nearest point to current mouse location (loc)
  * @param {Point} loc
  * @param {Point[]} points
  * @param {number} threshold
@@ -149,7 +149,7 @@ function getNearestPoint(loc, points, threshold = Number.MAX_SAFE_INTEGER) {
  * @param {Point} p2 point 2
  * @return {number} distance between the points
  */
-function distance(p1, p2) {
+export function distance(p1, p2) {
   return Math.hypot(p1.x - p2.x, p1.y - p2.y)
 }
 
