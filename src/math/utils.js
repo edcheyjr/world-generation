@@ -4,12 +4,15 @@ export {
   average,
   angle,
   add,
+  distance,
   subtract,
   scale,
   getNearestPoint,
   translate,
   getIntersection,
   lerp,
+  normalize,
+  magnitude,
 }
 /**
  * finds avarage loc of two point and position a new point in that location
@@ -149,7 +152,7 @@ function getNearestPoint(loc, points, threshold = Number.MAX_SAFE_INTEGER) {
  * @param {Point} p2 point 2
  * @return {number} distance between the points
  */
-export function distance(p1, p2) {
+function distance(p1, p2) {
   return Math.hypot(p1.x - p2.x, p1.y - p2.y)
 }
 
@@ -165,4 +168,21 @@ function translate(loc, alpha, offset) {
     loc.x + Math.cos(alpha) * offset,
     loc.y + Math.sin(alpha) * offset
   )
+}
+/**
+ * [Normalize](https://www.wallstreetmojo.com/normalization-formula/) a point p t
+ * scaling the function so that it has a standard maximum or minimum value, or adjusting it to have a standard integral or sum. [learn more](https://www.wallstreetmojo.com/normalization-formula/)
+ * @param {Point} p vector{x,y} p
+ * @returns {Point} vector with normalized values
+ */
+function normalize(p) {
+  return scale(p, 1 / magnitude(p))
+}
+/**
+ * Finds a magnutude or the distance of a point to origin. [learn more](https://en.wikipedia.org/wiki/Magnitude_(mathematics))
+ * @param {Point} p point p
+ * @return {number} which is the hypo or distance between origin and point/ vector p
+ */
+function magnitude(p) {
+  return Math.hypot(p.x, p.y) //  magnitude btwn {0, 0} and {x,y}
 }
