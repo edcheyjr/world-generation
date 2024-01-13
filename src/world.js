@@ -1,4 +1,5 @@
 import { Graph } from './math/graph.js'
+import { add, scale } from './math/utils.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
 import Segment from './primitive/segment.js'
@@ -63,7 +64,23 @@ export default class World {
         i-- // return to the same index as the array shifted by one
       }
     }
-    return guides
+    // divide long guides to smaller guides of atleast buildingMinLength
+    const supports = []
+    for (let seg of guides) {
+      const len = seg.length() + this.spacing
+      const buildingCount = Math.floor(
+        len / this.buildingMinLength + this.spacing
+      )
+      const buildingLength = len / buildingCount - this.spacing
+
+      const dir = seg.directionVector() //direction vector
+
+      let q1 = seg.p1
+      let q2 = add(q1, scale(dir, buildingLength)) // locates the new position of q2 from q1 depending on the scale
+      supports.push(new Segment(q1, q2))
+    }
+
+    return supports
   }
 
   /**

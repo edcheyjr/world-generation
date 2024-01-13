@@ -1,5 +1,5 @@
 import Point from './point.js'
-import { distance } from '../math/utils.js'
+import { distance, normalize, subtract } from '../math/utils.js'
 
 /**
  * primtive shape bulder class
@@ -32,6 +32,13 @@ export default class Segment {
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
     ctx.setLineDash([])
+  }
+  /**
+   * Direction vector of the segment
+   * @returns {Point}
+   */
+  directionVector() {
+    return normalize(subtract(p1, p2))
   }
 
   /**
