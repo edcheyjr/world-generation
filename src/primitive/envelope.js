@@ -1,4 +1,4 @@
-import { angle, translate, subract } from '../math/utils.js'
+import { angle, translate, subtract } from '../math/utils.js'
 import Point from './point.js'
 import Polygon from './polygon.js'
 
@@ -29,7 +29,7 @@ export default class Envelope {
     const { p1, p2 } = this.skeleton
 
     const radius = width / 2
-    const alpha = angle(subract(p1, p2))
+    const alpha = angle(subtract(p1, p2))
     const alpha_cw = alpha + Math.PI / 2
     const alpha_ccw = alpha - Math.PI / 2
 
