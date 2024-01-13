@@ -1,5 +1,5 @@
 import Point from './primitive/point.js'
-import { subract, add, scale } from './math/utils.js'
+import { subtract, add, scale } from './math/utils.js'
 import { getItem, setItem } from './helpers/localStorageAcess.js'
 
 const ZOOM_LEVEL = 'zoom-level'
@@ -56,7 +56,7 @@ export default class Viewport {
   #handleMouseMove(e) {
     if (this.pan.active) {
       this.pan.end = this.getMousePointPos(e)
-      this.pan.offset = subract(this.pan.end, this.pan.start)
+      this.pan.offset = subtract(this.pan.end, this.pan.start)
     }
   }
   /**

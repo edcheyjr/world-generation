@@ -4,7 +4,7 @@ export {
   average,
   angle,
   add,
-  subract,
+  subtract,
   scale,
   getNearestPoint,
   translate,
@@ -46,7 +46,7 @@ function add(p1, p2) {
  * @param {Point} p2 vector
  * @returns {Point} vector
  */
-function subract(p1, p2) {
+function subtract(p1, p2) {
   return new Point(p1.x - p2.x, p1.y - p2.y)
 }
 
