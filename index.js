@@ -33,10 +33,14 @@ const graph = graphInfo ? Graph.load(graphInfo) : new Graph()
 const viewport = new ViewPort(canvasOneEl)
 const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
 const world = new World(graph)
+let oldHash = world.hash()
 
 function animate() {
   viewport.reset(ctx)
-  world.generate()
+  if (world.hash() != oldHash) {
+    world.generate()
+    oldHash = world.hash()
+  }
   world.draw(ctx)
 
   ctx.globalAlpha = 0.4

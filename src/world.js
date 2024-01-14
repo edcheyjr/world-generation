@@ -167,34 +167,9 @@ export default class World {
     }
   }
   /**
-   * Recalcuate support size
-   * @param {number} index index of the support
-   * @param {Segment[]} supports  support array
+   * Keeps a cryptographic hash of the world only changes when something change in the world
    */
-  #extendABasesToLeftSupport(index, supports) {
-    // TODO
-    let supportPrevQ1 = supports[index].p1
-    let length = supports[index].length()
-    const dir = supports[index].directionReversedVector()
-    let newSupportQ2 = add(supportPrevQ1, scale(dir, length)) // extend its length*2
-    const newSupportQ1 = supports[index].p2
-    const deletedSegment = supports.splice(
-      index,
-      1,
-      new Segment(newSupportQ1, newSupportQ2)
-    )
-    return supports
+  hash() {
+    return JSON.stringify(this)
   }
-  // #extendABasesToRightSupport(index, supports) {
-  //   let supportPrevQ2 = supports[index].p2
-  //   let length = supports[index].length()
-  //   const dir = supports[index].directionVector()
-  //   let newSupportQ2 = add(supportPrevQ2, scale(dir, length)) // extend its length*2
-  //   const deletedSegment = supports.splice(
-  //     index,
-  //     1,
-  //     new Segment(supports[index].p1, newSupportQ2)
-  //   )
-  //   return supports
-  // }
 }
