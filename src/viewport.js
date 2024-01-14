@@ -99,7 +99,7 @@ export default class Viewport {
       (e.offsetX - this.center.x) * this.zoom - this.globalOffset.x,
       (e.offsetY - this.center.y) * this.zoom - this.globalOffset.y
     )
-    return subtractPanOffset ? subract(p, this.pan.offset) : p
+    return subtractPanOffset ? subtract(p, this.pan.offset) : p
   }
   /**
    * gets cumulative offset of the globalOffset and pan offset
