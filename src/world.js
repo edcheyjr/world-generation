@@ -1,5 +1,5 @@
 import { Graph } from './math/graph.js'
-import { add, scale } from './math/utils.js'
+import { add, lerp, scale } from './math/utils.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
 import Segment from './primitive/segment.js'
@@ -14,6 +14,8 @@ export default class World {
    * @param {Graph} graph
    * @param {number} roadWidth road width
    * @param {number} roadRoundness road roundness
+   * @param {number} buildingWidth width of the buildings
+   * @param {number} buildingMinLength minimum length of buildings
    */
   constructor(
     graph,
@@ -44,6 +46,13 @@ export default class World {
      * @type {Envelope[]}
      */
     this.buildings = []
+    /**
+     * trees store
+     */
+    this.trees = []
+
+    //world generation
+    this.generate()
   }
 
   #generateBuildings() {
@@ -65,12 +74,13 @@ export default class World {
       }
     }
     // divide long guides to smaller guides of atleast buildingMinLength
-    const supports = []
+    let supports = []
     for (let seg of guides) {
       const len = seg.length() + this.spacing
       const buildingCount = Math.floor(
-        len / this.buildingMinLength + this.spacing
+        len / (this.buildingMinLength + this.spacing)
       )
+      // console.log('buildingCount', buildingCount)
       const buildingLength = len / buildingCount - this.spacing
 
       const dir = seg.directionVector() //direction vector
@@ -78,9 +88,36 @@ export default class World {
       let q1 = seg.p1
       let q2 = add(q1, scale(dir, buildingLength)) // locates the new position of q2 from q1 depending on the scale
       supports.push(new Segment(q1, q2))
+
+      for (let i = 2; i <= buildingCount; i++) {
+        q1 = add(q2, scale(dir, this.spacing))
+        q2 = add(q1, scale(dir, buildingLength))
+        supports.push(new Segment(q1, q2))
+      }
+    }
+    /**
+     * bases or buildingFoundations of the builds of the buildings
+     * @type {Polygon[]}
+     */
+    const bases = []
+
+    for (const seg of supports) {
+      bases.push(new Envelope(seg, { width: this.buildingWidth }).poly) // building bases
     }
 
-    return supports
+    //check for intersecting buildings if the do there is a 50 percentage or what percentage you define that they will be removed
+    for (let i = 0; i < bases.length - 1; i++) {
+      for (let j = i + 1; j < bases.length; j++) {
+        if (bases[i].intesectsPoly(bases[j])) {
+          const chanceKeeping = Math.random() //TODO: returns a number btwn 0 and 1 todecide whether to join build or remove one in corners
+          bases.splice(j, 1) // remove
+          j--
+        }
+      }
+    }
+
+    return bases // buildings array
+  }
   }
 
   /**
@@ -129,4 +166,35 @@ export default class World {
       bld.draw(ctx)
     }
   }
+  /**
+   * Recalcuate support size
+   * @param {number} index index of the support
+   * @param {Segment[]} supports  support array
+   */
+  #extendABasesToLeftSupport(index, supports) {
+    // TODO
+    let supportPrevQ1 = supports[index].p1
+    let length = supports[index].length()
+    const dir = supports[index].directionReversedVector()
+    let newSupportQ2 = add(supportPrevQ1, scale(dir, length)) // extend its length*2
+    const newSupportQ1 = supports[index].p2
+    const deletedSegment = supports.splice(
+      index,
+      1,
+      new Segment(newSupportQ1, newSupportQ2)
+    )
+    return supports
+  }
+  // #extendABasesToRightSupport(index, supports) {
+  //   let supportPrevQ2 = supports[index].p2
+  //   let length = supports[index].length()
+  //   const dir = supports[index].directionVector()
+  //   let newSupportQ2 = add(supportPrevQ2, scale(dir, length)) // extend its length*2
+  //   const deletedSegment = supports.splice(
+  //     index,
+  //     1,
+  //     new Segment(supports[index].p1, newSupportQ2)
+  //   )
+  //   return supports
+  // }
 }

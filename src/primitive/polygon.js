@@ -179,4 +179,19 @@ export default class Polygon {
       ctx.stroke()
     }
   }
+  /**
+   * test for interection between this polygon and given polygon
+   * @param {Polygon} poly given poly
+   * @return {boolean} return true or false
+   */
+  intesectsPoly(poly) {
+    for (let s1 of this.segments) {
+      for (let s2 of poly.segments) {
+        if (getIntersection({ A: s1.p1, B: s1.p2 }, { C: s2.p1, D: s2.p2 })) {
+          return true
+        }
+      }
+    }
+    return false
+  }
 }

@@ -38,9 +38,15 @@ export default class Segment {
    * @returns {Point}
    */
   directionVector() {
-    return normalize(subtract(p1, p2))
+    return normalize(subtract(this.p2, this.p1))
   }
-
+  /**
+   *  Reversed Direction vector of the segment
+   * @returns {Point} vector
+   */
+  directionReversedVector() {
+    return normalize(subtract(this.p1, this.p2))
+  }
   /**
    * check if two segments are the same
    * @param {Segment} seg
