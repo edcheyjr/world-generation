@@ -2,6 +2,7 @@ import { Graph } from './math/graph.js'
 import { add, lerp, scale } from './math/utils.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
+import Point from './primitive/point.js'
 import Segment from './primitive/segment.js'
 
 /**
@@ -43,11 +44,12 @@ export default class World {
     this.roadBorders = []
     /**
      * buildings Store
-     * @type {Envelope[]}
+     * @type {Polygon[]}
      */
     this.buildings = []
     /**
      * trees store
+     * @type {Point[]}
      */
     this.trees = []
 
@@ -109,7 +111,9 @@ export default class World {
     for (let i = 0; i < bases.length - 1; i++) {
       for (let j = i + 1; j < bases.length; j++) {
         if (bases[i].intesectsPoly(bases[j])) {
-          const chanceKeeping = Math.random() //TODO: returns a number btwn 0 and 1 todecide whether to join build or remove one in corners
+          const chanceKeeping = Math.random()
+          //TODO: returns a number btwn 0 and 1 todecide whether to join build or remove one in corners find the road corner point and use that define new polygon with  the two shapes current just removing one of the interecting buildings
+          //Get that point by find in the pile of points used in generateTree function
           bases.splice(j, 1) // remove
           j--
         }
@@ -118,6 +122,35 @@ export default class World {
 
     return bases // buildings array
   }
+
+  /**
+   * Generate trees while the max as not be reached
+   * @param {number} max maximum number of trees that can be generated
+   */
+  #generateTrees(max = 10) {
+    //TODO: move this to constructor or its own function so that it can be accessed by other functions
+    const allPoints = [
+      ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
+      ...this.buildings.map((b) => b.points).flat(),
+    ]
+
+    const trees = []
+
+    // range to  place the trees randomly
+    const left = Math.min(...allPoints.map((p) => p.x))
+    const right = Math.max(...allPoints.map((p) => p.x))
+    const top = Math.min(...allPoints.map((p) => p.y))
+    const bottom = Math.max(...allPoints.map((p) => p.y))
+
+    while (trees.length < max) {
+      //try to generate more
+      const p = new Point(
+        lerp(left, right, Math.random()),
+        lerp(top, bottom, Math.random())
+      )
+      trees.push(p) // new tree location
+    }
+    return trees
   }
 
   /**
@@ -141,6 +174,7 @@ export default class World {
       this.roadBorders = Polygon.union(this.envelopes.map((env) => env.poly))
     }
     this.buildings = this.#generateBuildings()
+    this.trees = this.#generateTrees()
   }
   /**
    * draw function
@@ -161,6 +195,10 @@ export default class World {
       border.draw(ctx, { color: 'white', width: 4 })
     }
 
+    // trees rendering
+    for (let tree of this.trees) {
+      tree.draw(ctx)
+    }
     // building rendering
     for (let bld of this.buildings) {
       bld.draw(ctx)
