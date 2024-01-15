@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 import { Graph } from './math/graph.js'
 import { add, lerp, scale } from './math/utils.js'
 import Envelope from './primitive/envelope.js'
@@ -24,7 +26,8 @@ export default class World {
     roadRoundness = 10,
     buildingWidth = 150,
     buildingMinLength = 150,
-    spacing = 50
+    spacing = 50,
+    treeSize = 10
   ) {
     this.graph = graph
     this.roadWidth = roadWidth
@@ -142,13 +145,28 @@ export default class World {
     const top = Math.min(...allPoints.map((p) => p.y))
     const bottom = Math.max(...allPoints.map((p) => p.y))
 
+    const illegalPolys = [
+      ...this.buildings,
+      ...this.envelopes.map((e) => e.poly),
+    ]
+
     while (trees.length < max) {
       //try to generate more
       const p = new Point(
         lerp(left, right, Math.random()),
         lerp(top, bottom, Math.random())
       )
-      trees.push(p) // new tree location
+
+      let keep = true
+      for (const poly of illegalPolys) {
+        if (poly.containsPoint(p)) {
+          keep = false
+          break //save conputation power don't check test the point over at anymore polygon it's enough that it should be in one polygon atmost
+        }
+      }
+      if (keep) {
+        trees.push(p) // new tree location
+      }
     }
     return trees
   }
@@ -208,6 +226,14 @@ export default class World {
    * Keeps a cryptographic hash of the world only changes when something change in the world
    */
   hash() {
-    return JSON.stringify(this)
+    try {
+      return jwt.sign(this, privateKey, { algorithm: 'HS256' })
+    } catch (error) {
+      console.warn(
+        "would not hash using jwt make sure it's install otherwise will just used stringfied version of world"
+      )
+      console.error('Error', error)
+      return JSON.stringify(this)
+    }
   }
 }

@@ -7,10 +7,9 @@
     "test": "bun run ./test.js "
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
   },
-  "devDependencies": {},
-  "peerDependencies": {},
   "author": {
     "email": "edwinchebiikibet@gmail.com",
     "name": "edwin chebii",
