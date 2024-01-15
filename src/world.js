@@ -1,5 +1,5 @@
 import { Graph } from './math/graph.js'
-import { add, lerp, scale } from './math/utils.js'
+import { add, distance, lerp, scale } from './math/utils.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
 import Point from './primitive/point.js'
@@ -34,7 +34,7 @@ export default class World {
     this.buildingWidth = buildingWidth
     this.buildingMinLength = buildingMinLength
     this.spacing = spacing
-    this.treesSize = treeSize
+    this.treeSize = treeSize
     /**
      * envelopes info
      * @type {Envelope[]}
@@ -165,6 +165,14 @@ export default class World {
         }
       }
       if (keep) {
+        for (const tree of trees) {
+          if (distance(tree, p) < this.treeSize + this.spacing) {
+            keep = false
+            break
+          }
+        }
+      }
+      if (keep) {
         trees.push(p) // new tree location
       }
     }
@@ -215,7 +223,7 @@ export default class World {
 
     // trees rendering
     for (let tree of this.trees) {
-      tree.draw(ctx, { size: this.treesSize, color: 'rgba(0,0,0,0.5)' })
+      tree.draw(ctx, { size: this.treeSize, color: 'rgba(0,0,0,0.5)' })
     }
     // building rendering
     for (let bld of this.buildings) {
