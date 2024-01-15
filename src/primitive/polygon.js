@@ -138,7 +138,14 @@ export default class Polygon {
     }
     return intersectionCount % 2 == 1
   }
-
+  /**
+   * Finds shortest distance from a point to this polygon
+   * @param {Point} point
+   * @return {number} distance to point
+   */
+  distanceToPoint(point) {
+    return Math.min(...this.segments.map((s) => s.distanceToPoint(point))) // return the segment of the poly that has the shortest distance to the point
+  }
   /**
    * @param {*} ctx
    */
@@ -179,6 +186,7 @@ export default class Polygon {
       ctx.stroke()
     }
   }
+
   /**
    * test for interection between this polygon and given polygon
    * @param {Polygon} poly given poly

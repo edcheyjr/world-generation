@@ -128,9 +128,9 @@ export default class World {
 
   /**
    * Generate trees while the max as not be reached
-   * @param {number} max maximum number of trees that can be generated
+   * @param {number} maxTries maximum number of tries to place a tree default 100
    */
-  #generateTrees(max = 10) {
+  #generateTrees(maxTries = 100) {
     //TODO: move this to constructor or its own function so that it can be accessed by other functions
     const allPoints = [
       ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
@@ -149,8 +149,8 @@ export default class World {
       ...this.buildings,
       ...this.envelopes.map((e) => e.poly),
     ]
-
-    while (trees.length < max) {
+    let tryCount = 0
+    while (tryCount < maxTries) {
       //try to generate more
       const p = new Point(
         lerp(left, right, Math.random()),
@@ -159,14 +159,17 @@ export default class World {
 
       let keep = true
       for (const poly of illegalPolys) {
-        if (poly.containsPoint(p)) {
+        if (
+          poly.containsPoint(p) ||
+          poly.distanceToPoint(p) < this.treeSize / 2
+        ) {
           keep = false
           break //save conputation power don't check test the point over at anymore polygon it's enough that it should be in one polygon atmost
         }
       }
       if (keep) {
         for (const tree of trees) {
-          if (distance(tree, p) < this.treeSize + this.spacing) {
+          if (distance(tree, p) < this.treeSize) {
             keep = false
             break
           }
@@ -174,7 +177,9 @@ export default class World {
       }
       if (keep) {
         trees.push(p) // new tree location
+        tryCount = 0
       }
+      tryCount++ // increment count
     }
     return trees
   }

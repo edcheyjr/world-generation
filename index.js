@@ -41,7 +41,6 @@ function animate() {
   if (world.hash() != oldHash) {
     world.generate()
     oldHash = world.hash()
-    console.log('newHash', oldHash)
   }
   world.draw(ctx)
 

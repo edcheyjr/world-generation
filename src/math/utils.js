@@ -52,10 +52,10 @@ function add(p1, p2) {
  * finds the product between to points vectors
  * @param {Point} p1 vector
  * @param {Point} p2 vector
- * @returns {Point} product vector
+ * @returns {number} product
  */
 function dot(p1, p2) {
-  return new Point(p1.x * p2.x, p1.y * p2.y)
+  return p1.x * p2.x + p1.y * p2.y
 }
 /**
  * finds the difference between two point vectors
@@ -185,7 +185,8 @@ function translate(loc, alpha, offset) {
 }
 /**
  * [Normalize](https://www.wallstreetmojo.com/normalization-formula/) a point p t
- * scaling the function so that it has a standard maximum or minimum value, or adjusting it to have a standard integral or sum. [learn more](https://www.wallstreetmojo.com/normalization-formula/)
+ * scaling the function so that it has a standardized value normally between -1 and 1 maximum or minimum value, or adjusting it to have a standard integral or sum. [learn more](https://www.wallstreetmojo.com/normalization-formula/)
+ * @description normalize returns the value to range between 1 and -1 but does not affect the direction
  * @param {Point} p vector{x,y} p
  * @returns {Point} vector with normalized values
  */

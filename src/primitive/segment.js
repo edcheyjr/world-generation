@@ -1,5 +1,13 @@
 import Point from './point.js'
-import { distance, normalize, subtract } from '../math/utils.js'
+import {
+  add,
+  dot,
+  distance,
+  magnitude,
+  normalize,
+  scale,
+  subtract,
+} from '../math/utils.js'
 
 /**
  * primtive shape bulder class
@@ -32,6 +40,20 @@ export default class Segment {
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
     ctx.setLineDash([])
+  }
+  /**
+   * Finds the shortest distance to this segment
+   * @param {Point} point the point to test
+   * @return {number} distance to point
+   */
+  distanceToPoint(point) {
+    const proj = this.projectPoint(point)
+    if (proj.offset > 0 && proj.offset < 1) {
+      return distance(point, proj.point)
+    }
+    const distToP1 = distance(point, this.p1)
+    const distToP2 = distance(point, this.p2)
+    return Math.min(distToP1, distToP2)
   }
   /**
    * Direction vector of the segment
@@ -69,5 +91,22 @@ export default class Segment {
    */
   length() {
     return distance(this.p1, this.p2)
+  }
+  /**
+   * find the projection distance point to this segment and the point between this segment which connect  the projection
+   * @param {Point} point the point to test
+   * @return {{point:Point, offset:number}} prejected point and the offset to the point
+   */
+  projectPoint(point) {
+    const a = subtract(point, this.p1)
+    const b = subtract(this.p2, this.p1)
+    const normB = normalize(b)
+    const scaler = dot(a, normB)
+    const proj = {
+      point: add(this.p1, scale(normB, scaler)),
+      offset: scaler / magnitude(b),
+    }
+    // console.log('proj', proj)
+    return proj
   }
 }
