@@ -1,9 +1,14 @@
 import Point from '../primitive/point.js'
-
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+/* Vector Operations                (c) Edwin Chebii 2023-2050                                    */
+/*                                                                                   MIT Licence  */
+/* This helper function of vector operations                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 export {
   average,
   angle,
   add,
+  dot,
   distance,
   subtract,
   scale,
@@ -37,12 +42,21 @@ function angle(points_diff) {
  * finds the addition between two point vectors
  * @param {Point} p1 vector
  * @param {Point} p2 vector
- * @returns {Point} vector
+ * @returns {Point} sum of the vector
  */
 function add(p1, p2) {
   return new Point(p1.x + p2.x, p1.y + p2.y)
 }
 
+/**
+ * finds the product between to points vectors
+ * @param {Point} p1 vector
+ * @param {Point} p2 vector
+ * @returns {Point} product vector
+ */
+function dot(p1, p2) {
+  return new Point(p1.x * p2.x, p1.y * p2.y)
+}
 /**
  * finds the difference between two point vectors
  * @param {Point} p1 vector
