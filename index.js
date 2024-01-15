@@ -34,12 +34,14 @@ const viewport = new ViewPort(canvasOneEl)
 const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
 const world = new World(graph)
 let oldHash = world.hash()
+console.log('oldHash', oldHash)
 
 function animate() {
   viewport.reset(ctx)
   if (world.hash() != oldHash) {
     world.generate()
     oldHash = world.hash()
+    console.log('newHash', oldHash)
   }
   world.draw(ctx)
 

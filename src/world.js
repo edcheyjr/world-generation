@@ -1,11 +1,10 @@
-import jwt from 'jsonwebtoken'
-
 import { Graph } from './math/graph.js'
 import { add, lerp, scale } from './math/utils.js'
 import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
 import Point from './primitive/point.js'
 import Segment from './primitive/segment.js'
+import Sha256 from './helpers/hashAlgrorithm.js'
 
 /**
  * World generation and display
@@ -27,7 +26,7 @@ export default class World {
     buildingWidth = 150,
     buildingMinLength = 150,
     spacing = 50,
-    treeSize = 10
+    treeSize = 200
   ) {
     this.graph = graph
     this.roadWidth = roadWidth
@@ -35,6 +34,7 @@ export default class World {
     this.buildingWidth = buildingWidth
     this.buildingMinLength = buildingMinLength
     this.spacing = spacing
+    this.treesSize = treeSize
     /**
      * envelopes info
      * @type {Envelope[]}
@@ -215,7 +215,7 @@ export default class World {
 
     // trees rendering
     for (let tree of this.trees) {
-      tree.draw(ctx)
+      tree.draw(ctx, { size: this.treesSize, color: 'rgba(0,0,0,0.5)' })
     }
     // building rendering
     for (let bld of this.buildings) {
@@ -227,7 +227,7 @@ export default class World {
    */
   hash() {
     try {
-      return jwt.sign(this, privateKey, { algorithm: 'HS256' })
+      return Sha256.hash(JSON.stringify(this))
     } catch (error) {
       console.warn(
         "would not hash using jwt make sure it's install otherwise will just used stringfied version of world"
