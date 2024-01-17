@@ -3,6 +3,7 @@ import ViewPort from './src/viewport.js'
 import GraphEditor from './src/graphEditor.js'
 import World from './src/world.js'
 import { getItem, setItem } from './src/helpers/localStorageAcess.js'
+import { scale } from './src/math/utils.js'
 
 const CONTEXT_TYPE = '2d'
 const GRAPH_STORE_NAME = 'graph'
@@ -42,7 +43,8 @@ function animate() {
     world.generate()
     oldHash = world.hash()
   }
-  world.draw(ctx)
+  const viewPoint = scale(viewport.getOffset(), -1)
+  world.draw(ctx, viewPoint)
 
   ctx.globalAlpha = 0.4
   graphEditor.display()
