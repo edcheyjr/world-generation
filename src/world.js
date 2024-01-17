@@ -4,6 +4,8 @@ import Envelope from './primitive/envelope.js'
 import Polygon from './primitive/polygon.js'
 import Point from './primitive/point.js'
 import Segment from './primitive/segment.js'
+import Tree from './items/tree.js'
+
 import Sha256 from './helpers/hashAlgrorithm.js'
 
 /**
@@ -52,7 +54,7 @@ export default class World {
     this.buildings = []
     /**
      * trees store
-     * @type {Point[]}
+     * @type {Tree[]}
      */
     this.trees = []
 
@@ -109,11 +111,14 @@ export default class World {
     for (const seg of supports) {
       bases.push(new Envelope(seg, { width: this.buildingWidth }).poly) // building bases
     }
-
+    const eps = 0.001
     //check for intersecting buildings if the do there is a 50 percentage or what percentage you define that they will be removed
     for (let i = 0; i < bases.length - 1; i++) {
       for (let j = i + 1; j < bases.length; j++) {
-        if (bases[i].intesectsPoly(bases[j])) {
+        if (
+          bases[i].intesectsPoly(bases[j]) ||
+          bases[i].distanceToPoly(bases[j]) < this.spacing - eps
+        ) {
           const chanceKeeping = Math.random()
           //TODO: returns a number btwn 0 and 1 todecide whether to join build or remove one in corners find the road corner point and use that define new polygon with  the two shapes current just removing one of the interecting buildings
           //Get that point by find in the pile of points used in generateTree function
@@ -129,6 +134,7 @@ export default class World {
   /**
    * Generate trees while the max as not be reached
    * @param {number} maxTries maximum number of tries to place a tree default 100
+   * @return {Tree[]} returns array of trees
    */
   #generateTrees(maxTries = 100) {
     //TODO: move this to constructor or its own function so that it can be accessed by other functions
@@ -158,27 +164,45 @@ export default class World {
       )
 
       let keep = true
+
+      //check if the trees if in illegal position
       for (const poly of illegalPolys) {
         if (
           poly.containsPoint(p) ||
           poly.distanceToPoint(p) < this.treeSize / 2
         ) {
           keep = false
-          break //save conputation power don't check test the point over at anymore polygon it's enough that it should be in one polygon atmost
+          break //save computation power don't check test the point over at anymore polygon it's enough that it should be in one polygon atmost
         }
       }
+
+      //check if trees are so close to each other
       if (keep) {
         for (const tree of trees) {
-          if (distance(tree, p) < this.treeSize) {
+          if (distance(tree.center, p) < this.treeSize) {
             keep = false
             break
           }
         }
       }
+
+      //check if trees are so far away
       if (keep) {
-        trees.push(p) // new tree location
+        let closeToSomething = false
+        for (let poly of illegalPolys) {
+          if (poly.distanceToPoint(p) < this.treeSize * 2) {
+            closeToSomething = true
+            break
+          }
+        }
+        keep = closeToSomething
+      }
+
+      if (keep) {
+        trees.push(new Tree(p, this.treeSize)) // new tree
         tryCount = 0
       }
+
       tryCount++ // increment count
     }
     return trees
@@ -209,9 +233,10 @@ export default class World {
   }
   /**
    * draw function
-   * @param {CanvasRenderingContext2D} ctx
+   * @param {CanvasRenderingContext2D} ctx 2D canvas Context
+   * @param {Point} viewPoint camera point of view
    */
-  draw(ctx, {} = {}) {
+  draw(ctx, viewPoint, {} = {}) {
     //road tarmac
     for (let env of this.envelopes) {
       env.draw(ctx, { fillColor: '#bbb', strokeColor: '#bbb', lineWidth: 20 })
@@ -228,7 +253,7 @@ export default class World {
 
     // trees rendering
     for (let tree of this.trees) {
-      tree.draw(ctx, { size: this.treeSize, color: 'rgba(0,0,0,0.5)' })
+      tree.draw(ctx, viewPoint)
     }
     // building rendering
     for (let bld of this.buildings) {
@@ -236,7 +261,8 @@ export default class World {
     }
   }
   /**
-   * Keeps a cryptographic hash of the world only changes when something change in the world
+   * Keeps a cryptographic hash of the world
+   * only changes when something change in the world
    */
   hash() {
     try {

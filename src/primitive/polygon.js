@@ -147,7 +147,15 @@ export default class Polygon {
     return Math.min(...this.segments.map((s) => s.distanceToPoint(point))) // return the segment of the poly that has the shortest distance to the point
   }
   /**
-   * @param {*} ctx
+   * Finds shortest distance from a poly to this polygon
+   * @param {Polygon} poly a poly to test
+   * @return {number} distance to point
+   */
+  distanceToPoly(poly) {
+    return Math.min(...this.points.map((point) => poly.distanceToPoint(point))) // return the segment of the poly that has the shortest distance to the point
+  }
+  /**
+   * @param {CanvasRenderingContext2D} ctx 2D canvas context
    */
   drawSegments(ctx) {
     for (const seg of this.segments) {
