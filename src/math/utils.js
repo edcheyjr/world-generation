@@ -1,6 +1,6 @@
 import Point from '../primitive/point.js'
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-/* Vector Operations                (c) Edwin Chebii 2023-2050                                    */
+/* Vector Operations                                                  (c) Edwin Chebii 2023-2050  */
 /*                                                                                   MIT Licence  */
 /* This helper function of vector operations                                                      */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
@@ -16,6 +16,7 @@ export {
   translate,
   getIntersection,
   lerp,
+  lerp2D,
   normalize,
   magnitude,
 }
@@ -92,7 +93,7 @@ function scale(p1, scaler) {
  * @param {number} t  A parameter that represents the interpolation factor. It ranges from 0 to 1, where 0 corresponds to the starting value, 1 corresponds to the ending value, and values in between represent the interpolation between the two
  * ________________________________________
  *
- * @returns {int} position(number) between postions A and B depending with the factor t
+ * @returns {number} position(number) between postions A and B depending with the factor t
  *
  * @example
  * let startValue = 10;
@@ -102,8 +103,19 @@ function scale(p1, scaler) {
  * console.log(result); // Output: 15
  *
  */
+
 function lerp(A, B, t) {
   return A + (B - A) * t
+}
+/**
+ * interpolation for 2D space
+ * @param {Point} A  a point on space
+ * @param {Point} B a point on space
+ * @param {number} t this the pecentage  we want to lerp to x and y
+ * @returns {Point} new point at the lerped location
+ */
+function lerp2D(A, B, t) {
+  return new Point(lerp(A.x, B.x, t), lerp(A.y, B.y, t))
 }
 
 /**
