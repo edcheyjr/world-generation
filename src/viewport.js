@@ -19,7 +19,7 @@ export default class Viewport {
     this.globalOffset = scale(this.center, -1)
     this.zoomAttir = {
       minZoom: 1,
-      maxZoom: 5,
+      maxZoom: 7,
       zoomSteps: 0.1,
     }
     this.keys = []
@@ -85,7 +85,12 @@ export default class Viewport {
       this.zoomAttir.minZoom,
       Math.min(this.zoomAttir.maxZoom, this.zoom)
     ) // zoom cap between min and max zooms
-    setItem(ZOOM_LEVEL, this.zoom) // persist current zoom
+
+    //only store zoom if zoom beyond a value of 1
+    const prevZoom = getItem(ZOOM_LEVEL, 'number')
+    if (Math.abs(this.zoom - prevZoom) >= 1) {
+      setItem(ZOOM_LEVEL, this.zoom) // persist current zoom
+    }
   }
 
   /**
