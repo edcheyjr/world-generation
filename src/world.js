@@ -5,6 +5,7 @@ import Polygon from './primitive/polygon.js'
 import Point from './primitive/point.js'
 import Segment from './primitive/segment.js'
 import Tree from './items/tree.js'
+import Building from './items/building.js'
 
 import Sha256 from './helpers/hashAlgrorithm.js'
 
@@ -49,7 +50,7 @@ export default class World {
     this.roadBorders = []
     /**
      * buildings Store
-     * @type {Polygon[]}
+     * @type {Building[]}
      */
     this.buildings = []
     /**
@@ -128,7 +129,7 @@ export default class World {
       }
     }
 
-    return bases // buildings array
+    return bases.map((p) => new Building(p)) // buildings array
   }
 
   /**
@@ -140,7 +141,7 @@ export default class World {
     //TODO: move this to constructor or its own function so that it can be accessed by other functions
     const allPoints = [
       ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
-      ...this.buildings.map((b) => b.points).flat(),
+      ...this.buildings.map((b) => b.base.points).flat(),
     ]
 
     const trees = []
@@ -152,7 +153,7 @@ export default class World {
     const bottom = Math.max(...allPoints.map((p) => p.y))
 
     const illegalPolys = [
-      ...this.buildings,
+      ...this.buildings.map((b) => b.base),
       ...this.envelopes.map((e) => e.poly),
     ]
     let tryCount = 0
@@ -251,13 +252,16 @@ export default class World {
       border.draw(ctx, { color: 'white', width: 4 })
     }
 
-    // trees rendering
-    for (let tree of this.trees) {
-      tree.draw(ctx, viewPoint)
-    }
-    // building rendering
-    for (let bld of this.buildings) {
-      bld.draw(ctx)
+    //items rendering
+    const items = [...this.buildings, ...this.trees]
+    //sort the items order of rendering
+    items.sort(
+      (a, b) =>
+        b.base.distanceToPoint(viewPoint) - a.base.distanceToPoint(viewPoint)
+    )
+    // trees and building and other items rendering
+    for (let item of items) {
+      item.draw(ctx, viewPoint)
     }
   }
   /**
