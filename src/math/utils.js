@@ -12,6 +12,7 @@ export {
   distance,
   subtract,
   scale,
+  getFake3dPoint,
   getNearestPoint,
   translate,
   getIntersection,
@@ -212,4 +213,18 @@ function normalize(p) {
  */
 function magnitude(p) {
   return Math.hypot(p.x, p.y) //  magnitude btwn {0, 0} and {x,y}
+}
+
+/**
+ * Gets a fake tree3D point on space
+ * @param {Point} point base point
+ * @param {Point} viewPoint  camera point of view {x,y} vector
+ * @param {number} height the y distance given y is the distance going up on the fake 3d space
+ * @return {Point} point on space
+ */
+function getFake3dPoint(point, viewPoint, height) {
+  const dir = normalize(subtract(point, viewPoint))
+  const dist = distance(point, viewPoint)
+  const scaler = Math.atan(dist / 300) / (Math.PI / 2)
+  return add(point, scale(dir, height * scaler))
 }
