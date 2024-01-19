@@ -1,4 +1,4 @@
-import { getFake3dPoint } from '../math/utils.js'
+import { average, getFake3dPoint } from '../math/utils.js'
 import Polygon from '../primitive/polygon.js'
 
 export default class Building {
@@ -23,16 +23,36 @@ export default class Building {
     const topPoints = this.base.points.map((p) =>
       getFake3dPoint(p, viewPoint, this.height * this.heightCoef)
     )
+    //ceiling
+    const ceiling = new Polygon(topPoints)
+
+    const baseMidpoints = [
+      average(this.base.points[0], this.base.points[1]),
+      average(this.base.points[2], this.base.points[3]),
+    ]
+    //top mid-points
+    const topMidpoints = baseMidpoints.map((p) =>
+      getFake3dPoint(p, viewPoint, this.height)
+    )
+    console.log('topMidpoints', topMidpoints)
     const sides = []
     for (let i = 0; i < this.base.points.length; i++) {
       const nextI = (i + 1) % this.base.points.length
-      const poly = new Polygon([
-        this.base.points[i],
-        this.base.points[nextI],
-        topPoints[nextI],
-        topPoints[i],
-      ])
-      sides.push(poly)
+      if (i % 2 == 0) {
+        const poly = new Polygon([
+          topPoints[nextI],
+          topMidpoints[Math.max(0, i - 1)],
+          topPoints[i],
+        ])
+        sides.push(poly)
+      }
+      // const poly = new Polygon([
+      //   this.base.points[i],
+      //   this.base.points[nextI],
+      //   topPoints[nextI],
+      //   topPoints[i],
+      // ])
+      // sides.push(poly)
     }
 
     //sides sorting
@@ -40,12 +60,30 @@ export default class Building {
       (a, b) => b.distanceToPoint(viewPoint) - a.distanceToPoint(viewPoint)
     )
 
-    const ceiling = new Polygon(topPoints)
+    const roofPolys = [
+      new Polygon([
+        ceiling.points[0],
+        ceiling.points[3],
+        topMidpoints[1],
+        topMidpoints[0],
+      ]),
+      new Polygon([
+        ceiling.points[2],
+        ceiling.points[1],
+        topMidpoints[0],
+        topMidpoints[1],
+      ]),
+    ]
+    roofPolys.sort(
+      (a, b) => b.distanceToPoint(viewPoint) - a.distanceToPoint(viewPoint)
+    )
 
     this.base.draw(ctx, {
       fillColor: 'white',
       strokeColor: '#444',
     })
+
+    topMidpoints.map(p)
     for (let side of sides) {
       side.draw(ctx, {
         fillColor: 'white',
@@ -56,5 +94,13 @@ export default class Building {
       fillColor: 'gray',
       strokeColor: '#444',
     })
+    for (const poly of roofPolys) {
+      poly.draw(ctx, {
+        fillColor: '#D44',
+        strokeColor: '#C44',
+        lineWidth: 2,
+        join: 'round',
+      })
+    }
   }
 }
