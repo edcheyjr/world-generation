@@ -235,7 +235,7 @@ export default class World {
   /**
    * draw function
    * @param {CanvasRenderingContext2D} ctx 2D canvas Context
-   * @param {Point} viewPoint camera point of view
+   * @param {Point} viewPoint camera point of view  {x,y} vector
    */
   draw(ctx, viewPoint, {} = {}) {
     //road tarmac

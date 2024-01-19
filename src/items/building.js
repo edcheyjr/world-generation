@@ -1,4 +1,4 @@
-import { add, subtract, scale } from '../math/utils.js'
+import { getFake3dPoint } from '../math/utils.js'
 import Polygon from '../primitive/polygon.js'
 
 export default class Building {
@@ -7,9 +7,10 @@ export default class Building {
    * @param {Polygon} poly base of the building
    * @param {number} heightCoef height co-efficient use to adjust the height of the buildiing
    */
-  constructor(poly, heightCoef = 0.1) {
+  constructor(poly, heightCoef = 0.6, maxHeight = 180) {
     this.base = poly
     this.heightCoef = heightCoef
+    this.height = maxHeight
   }
   /**
    * draw
@@ -20,7 +21,7 @@ export default class Building {
    */
   draw(ctx, viewPoint) {
     const topPoints = this.base.points.map((p) =>
-      add(p, scale(subtract(p, viewPoint), this.heightCoef))
+      getFake3dPoint(p, viewPoint, this.height * this.heightCoef)
     )
     const sides = []
     for (let i = 0; i < this.base.points.length; i++) {
@@ -44,19 +45,16 @@ export default class Building {
     this.base.draw(ctx, {
       fillColor: 'white',
       strokeColor: '#444',
-      lineWidth: 4,
     })
     for (let side of sides) {
       side.draw(ctx, {
         fillColor: 'white',
         strokeColor: '#444',
-        lineWidth: 4,
       })
     }
     ceiling.draw(ctx, {
       fillColor: 'gray',
       strokeColor: '#444',
-      lineWidth: 4,
     })
   }
 }
