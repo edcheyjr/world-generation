@@ -88,10 +88,10 @@ export default class Building {
         strokeColor: '#44444499',
       })
     }
-    ceiling.draw(ctx, {
-      fillColor: 'gray',
-      strokeColor: '#444',
-    })
+    // ceiling.draw(ctx, {
+    //   fillColor: 'gray',
+    //   strokeColor: '#444',
+    // })
     for (let sideRoof of sideRoofPanels) {
       sideRoof.draw(ctx, {
         fillColor: 'white',
