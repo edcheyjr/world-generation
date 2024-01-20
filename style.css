@@ -1,6 +1,6 @@
 body {
   background: black;
-  margin: auto auto;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -11,6 +11,7 @@ h1 {
 
 #canvasOne {
   background-color: #2a5;
+  margin-bottom: 25px;
 }
 
 #control {
@@ -18,11 +19,12 @@ h1 {
 }
 button {
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 7px 7px;
   font-size: larger;
   border: 1px solid white;
   background: transparent;
   border-radius: 2px;
+  text-shadow: 1px 1px white;
 }
 
 button:hover {
