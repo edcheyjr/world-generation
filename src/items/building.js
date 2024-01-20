@@ -34,29 +34,28 @@ export default class Building {
     const topMidpoints = baseMidpoints.map((p) =>
       getFake3dPoint(p, viewPoint, this.height)
     )
-    console.log('topMidpoints', topMidpoints)
     const sides = []
     for (let i = 0; i < this.base.points.length; i++) {
       const nextI = (i + 1) % this.base.points.length
-      if (i % 2 == 0) {
-        const poly = new Polygon([
-          topPoints[nextI],
-          topMidpoints[Math.max(0, i - 1)],
-          topPoints[i],
-        ])
-        sides.push(poly)
-      }
-      // const poly = new Polygon([
-      //   this.base.points[i],
-      //   this.base.points[nextI],
-      //   topPoints[nextI],
-      //   topPoints[i],
-      // ])
-      // sides.push(poly)
+      const poly = new Polygon([
+        this.base.points[i],
+        this.base.points[nextI],
+        topPoints[nextI],
+        topPoints[i],
+      ])
+      sides.push(poly)
     }
 
     //sides sorting
     sides.sort(
+      (a, b) => b.distanceToPoint(viewPoint) - a.distanceToPoint(viewPoint)
+    )
+
+    const sideRoofPanels = [
+      new Polygon([ceiling.points[0], topMidpoints[0], ceiling.points[1]]),
+      new Polygon([ceiling.points[2], topMidpoints[1], ceiling.points[3]]),
+    ]
+    sideRoofPanels.sort(
       (a, b) => b.distanceToPoint(viewPoint) - a.distanceToPoint(viewPoint)
     )
 
@@ -83,17 +82,22 @@ export default class Building {
       strokeColor: '#444',
     })
 
-    topMidpoints.map(p)
     for (let side of sides) {
       side.draw(ctx, {
         fillColor: 'white',
-        strokeColor: '#444',
+        strokeColor: '#44444499',
       })
     }
     ceiling.draw(ctx, {
       fillColor: 'gray',
       strokeColor: '#444',
     })
+    for (let sideRoof of sideRoofPanels) {
+      sideRoof.draw(ctx, {
+        fillColor: 'white',
+        strokeColor: 'white',
+      })
+    }
     for (const poly of roofPolys) {
       poly.draw(ctx, {
         fillColor: '#D44',
