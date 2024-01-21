@@ -78,14 +78,16 @@ export default class Building {
     )
 
     this.base.draw(ctx, {
-      fillColor: 'white',
-      strokeColor: '#444',
+      fillColor: '#44444433',
+      lineWidth: 16,
+      strokeColor: '#33333355',
     })
 
     for (let side of sides) {
       side.draw(ctx, {
         fillColor: 'white',
-        strokeColor: '#44444499',
+        strokeColor: '#44444411',
+        lineWidth: 1,
       })
     }
     // ceiling.draw(ctx, {
