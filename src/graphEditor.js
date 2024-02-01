@@ -24,7 +24,6 @@ export default class GraphEditor {
     this.hovered = null
     this.selected = null
     this.dragging = false
-    this.#addEventListeners()
   }
 
   dispose() {
@@ -46,6 +45,18 @@ export default class GraphEditor {
       this.hovered.draw(this.ctx, { fill: true })
     }
   }
+  /**
+   * enables graph editor
+   */
+  enable() {
+    this.#addEventListeners()
+  }
+  /**
+   * disables graph editor
+   */
+  disable() {
+    this.#removeEventListeners()
+  }
 
   #addEventListeners() {
     this.#getCanvas().addEventListener(
@@ -58,6 +69,23 @@ export default class GraphEditor {
     )
     this.#getCanvas().addEventListener('mouseup', () => (this.dragging = false))
     this.#getCanvas().addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
+  }
+  #removeEventListeners() {
+    this.#getCanvas().removeEventListener(
+      'mousedown',
+      this.#handleMouseDown.bind(this)
+    )
+    this.#getCanvas().removeEventListener(
+      'mousemove',
+      this.#handleMouseMove.bind(this)
+    )
+    this.#getCanvas().removeEventListener(
+      'mouseup',
+      () => (this.dragging = false)
+    )
+    this.#getCanvas().removeEventListener('contextmenu', (e) =>
+      e.preventDefault()
+    ) //prevent default menus
   }
 
   #getCanvas() {

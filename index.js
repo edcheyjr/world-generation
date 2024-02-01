@@ -13,8 +13,12 @@ const GRAPH_STORE_NAME = 'graph'
 const CONTEXT_ATTRIBUTES = {}
 
 const canvasOneEl = document.getElementById('canvasOne')
+
+//control buttons
 const clearBtnEl = document.getElementById('clear-btn')
 const saveBtnEl = document.getElementById('save-btn')
+const graphBtnEl = document.getElementById('graph')
+const stopBtnEl = document.getElementById('stop')
 /**
  * @type {CanvasRenderingContext2D}
  */
@@ -70,3 +74,36 @@ function save() {
   console.log('sucessfully saved graph')
 }
 saveBtnEl.addEventListener('click', save)
+/**
+ * disable editors
+ */
+function disableAllEditors() {
+  graphBtnEl.style.backgroundColor = '#88888888'
+  graphBtnEl.style.filter = 'grayscale(100%)'
+  graphEditor.disable()
+  stopBtnEl.style.backgroundColor = '#88888888'
+  stopBtnEl.style.filter = 'grayscale(100%)'
+}
+
+/**
+ * set an editor active
+ * @param {'graph' | 'stop'} mode editor mode to be set to active
+ */
+function setMode(mode = 'graph') {
+  //disable all editors currently active
+  // disableAllEditors()
+  switch (mode) {
+    case 'graph':
+      console.log('graph')
+      graphBtnEl.style.backgroundColor = 'rgba(34, 170, 86, 0.336)'
+      graphBtnEl.style.filter = ''
+      graphEditor.enable()
+      break
+    case 'stop':
+      graphBtnEl.style.backgroundColor = 'rgba(34, 170, 86, 0.336)'
+      graphBtnEl.style.filter = ''
+      break
+  }
+}
+graphBtnEl.addEventListener('click', () => setMode('graph'))
+stopBtnEl.addEventListener('click', () => setMode('stop'))
