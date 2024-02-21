@@ -1,6 +1,6 @@
 import { Graph } from './src/math/graph.js'
 import ViewPort from './src/viewport.js'
-import GraphEditor from './src/graphEditor.js'
+import GraphEditor from './src/editors/graphEditor.js'
 import World from './src/world.js'
 import { getItem, setItem } from './src/helpers/localStorageAcess.js'
 import { scale } from './src/math/utils.js'
