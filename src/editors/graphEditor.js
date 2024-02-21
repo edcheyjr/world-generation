@@ -4,6 +4,9 @@ import { getNearestPoint } from '../math/utils.js'
 import Segment from '../primitive/segment.js'
 import Viewport from '../viewport.js'
 
+/**
+ * graph editor
+ */
 export default class GraphEditor {
   /**
    * Graph Editor
