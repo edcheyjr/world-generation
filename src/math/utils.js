@@ -1,4 +1,5 @@
 import Point from '../primitive/point.js'
+import Segment from '../primitive/segment.js'
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /* Vector Operations                                                  (c) Edwin Chebii 2023-2050  */
 /*                                                                                   MIT Licence  */
@@ -10,16 +11,17 @@ export {
   add,
   dot,
   distance,
-  subtract,
-  scale,
   getFake3dPoint,
+  getNearestSegment,
   getNearestPoint,
-  translate,
   getIntersection,
   lerp,
   lerp2D,
   normalize,
   magnitude,
+  subtract,
+  scale,
+  translate,
 }
 /**
  * finds avarage loc of two point and position a new point in that location
@@ -153,6 +155,8 @@ function getIntersection({ A, B }, { C, D }) {
   }
   return null
 }
+
+// TODO create a getNearest which gets the nearest segment and point in an object the remove getNearestPoint and getNearestSegment
 /**
  *  finds the nearest point to current mouse location (loc)
  * @param {Point} loc
@@ -171,6 +175,26 @@ function getNearestPoint(loc, points, threshold = Number.MAX_SAFE_INTEGER) {
     }
   }
   return nearestPoint
+}
+/**
+ *  finds the nearest point to current mouse location (loc)
+ * @param {Point} loc location on the canvas
+ * @param {Segment[]} segments list of segments
+ * @param {number} threshold threshold
+ * @returns {Point}
+ */
+function getNearestSegment(loc, segments, threshold = Number.MAX_SAFE_INTEGER) {
+  let minDist = Number.MAX_SAFE_INTEGER
+  let nearestSegment = null
+  // tries to find the segment with the shortest distance from one of this point to this loc
+  for (let seg of segments) {
+    let dist = seg.distanceToPoint(loc, point)
+    if (dist < minDist && dist < threshold) {
+      minDist = dist
+      nearestSegment = seg
+    }
+  }
+  return nearestSegment
 }
 
 /**
