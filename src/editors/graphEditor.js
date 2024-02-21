@@ -1,8 +1,8 @@
-import { Graph } from './math/graph.js'
-import Point from './primitive/point.js'
-import { getNearestPoint } from './math/utils.js'
-import Segment from './primitive/segment.js'
-import Viewport from './viewport.js'
+import { Graph } from '../math/graph.js'
+import Point from '../primitive/point.js'
+import { getNearestPoint } from '../math/utils.js'
+import Segment from '../primitive/segment.js'
+import Viewport from '../viewport.js'
 
 export default class GraphEditor {
   /**
@@ -24,6 +24,10 @@ export default class GraphEditor {
     this.hovered = null
     this.selected = null
     this.dragging = false
+    this.boundMouseDown = this.#handleMouseDown.bind(this)
+    this.boundMouseMove = this.#handleMouseMove.bind(this)
+    this.mouseUp = () => (this.dragging = false)
+    this.preventDefault = (e) => e.preventDefault()
   }
 
   dispose() {
@@ -59,33 +63,16 @@ export default class GraphEditor {
   }
 
   #addEventListeners() {
-    this.#getCanvas().addEventListener(
-      'mousedown',
-      this.#handleMouseDown.bind(this)
-    )
-    this.#getCanvas().addEventListener(
-      'mousemove',
-      this.#handleMouseMove.bind(this)
-    )
-    this.#getCanvas().addEventListener('mouseup', () => (this.dragging = false))
-    this.#getCanvas().addEventListener('contextmenu', (e) => e.preventDefault()) //prevent default menus
+    this.#getCanvas().addEventListener('mousedown', this.boundMouseDown)
+    this.#getCanvas().addEventListener('mousemove', this.boundMouseMove)
+    this.#getCanvas().addEventListener('mouseup', this.mouseUp)
+    this.#getCanvas().addEventListener('contextmenu', this.preventDefault) //prevent default menus
   }
   #removeEventListeners() {
-    this.#getCanvas().removeEventListener(
-      'mousedown',
-      this.#handleMouseDown.bind(this)
-    )
-    this.#getCanvas().removeEventListener(
-      'mousemove',
-      this.#handleMouseMove.bind(this)
-    )
-    this.#getCanvas().removeEventListener(
-      'mouseup',
-      () => (this.dragging = false)
-    )
-    this.#getCanvas().removeEventListener('contextmenu', (e) =>
-      e.preventDefault()
-    ) //prevent default menus
+    this.#getCanvas().removeEventListener('mousedown', this.boundMouseDown)
+    this.#getCanvas().removeEventListener('mousemove', this.boundMouseMove)
+    this.#getCanvas().removeEventListener('mouseup', this.mouseUp)
+    this.#getCanvas().removeEventListener('contextmenu', this.preventDefault) //prevent default menus
   }
 
   #getCanvas() {

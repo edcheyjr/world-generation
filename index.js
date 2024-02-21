@@ -91,7 +91,7 @@ function disableAllEditors() {
  */
 function setMode(mode = 'graph') {
   //disable all editors currently active
-  // disableAllEditors()
+  disableAllEditors()
   switch (mode) {
     case 'graph':
       console.log('graph')
@@ -100,8 +100,9 @@ function setMode(mode = 'graph') {
       graphEditor.enable()
       break
     case 'stop':
-      graphBtnEl.style.backgroundColor = 'rgba(34, 170, 86, 0.336)'
-      graphBtnEl.style.filter = ''
+      console.log('graph')
+      stopBtnEl.style.backgroundColor = 'rgba(34, 170, 86, 0.336)'
+      stopBtnEl.style.filter = ''
       break
   }
 }
