@@ -1,6 +1,6 @@
-import World from '../world'
-import Viewport from '../viewport'
-import { getNearestSegment } from '../math/utils'
+import World from '../world.js'
+import Viewport from '../viewport.js'
+import { getNearestSegment } from '../math/utils.js'
 /**
  * stop editor
  */
