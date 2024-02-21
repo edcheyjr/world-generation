@@ -1,6 +1,7 @@
 import { Graph } from './src/math/graph.js'
 import ViewPort from './src/viewport.js'
 import GraphEditor from './src/editors/graphEditor.js'
+import StopEditor from './src/editors/stopEditor.js'
 import World from './src/world.js'
 import { getItem, setItem } from './src/helpers/localStorageAcess.js'
 import { scale } from './src/math/utils.js'
@@ -36,10 +37,13 @@ const ctx = canvasOneEl.getContext(CONTEXT_TYPE, CONTEXT_ATTRIBUTES)
 const graphInfo = getItem(GRAPH_STORE_NAME, 'object')
 const graph = graphInfo ? Graph.load(graphInfo) : new Graph()
 const viewport = new ViewPort(canvasOneEl)
-const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
 const world = new World(graph)
 let oldHash = world.hash()
 console.log('oldHash', oldHash)
+
+// Editors
+const graphEditor = new GraphEditor(viewport, graph, CONTEXT_TYPE)
+const stopEditor = new StopEditor(viewport, world)
 
 function animate() {
   viewport.reset(ctx)
@@ -51,7 +55,9 @@ function animate() {
   world.draw(ctx, viewPoint)
 
   ctx.globalAlpha = 0.4
+  // editors can be removes
   graphEditor.display()
+  stopEditor.display()
   requestAnimationFrame(animate)
 }
 animate()
