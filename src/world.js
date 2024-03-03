@@ -58,7 +58,11 @@ export default class World {
      * @type {Tree[]}
      */
     this.trees = []
-
+    /**
+     * lane guides
+     * @type {Segment[]}
+     */
+    this.laneGuides = []
     //world generation
     this.generate()
   }
