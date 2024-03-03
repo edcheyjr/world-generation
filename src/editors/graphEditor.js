@@ -27,6 +27,7 @@ export default class GraphEditor {
     this.hovered = null
     this.selected = null
     this.dragging = false
+    this.isDisabled = false
     this.boundMouseDown = this.#handleMouseDown.bind(this)
     this.boundMouseMove = this.#handleMouseMove.bind(this)
     this.mouseUp = () => (this.dragging = false)
@@ -57,12 +58,15 @@ export default class GraphEditor {
    */
   enable() {
     this.#addEventListeners()
+    this.isDisabled = false
   }
   /**
    * disables graph editor
+   * @return {boolean}
    */
   disable() {
     this.#removeEventListeners()
+    this.isDisabled = true
   }
 
   #addEventListeners() {

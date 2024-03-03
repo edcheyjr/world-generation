@@ -18,26 +18,27 @@ export default class StopEditor {
     this.boundMouseDown = this.#handleMouseDown.bind(this)
     this.boundMouseMove = this.#handleMouseMove.bind(this)
     this.preventDefault = (e) => e.preventDefault()
-    /**
-     * @type {Segment | null}
-     */
     this.intent = null
+    this.isDisabled = false
     this.mouse = null
+    console.log('intialized')
   }
   #getCanvas() {
     return this.viewport.canvas
   }
   /**
-   * enables graph editor
+   * enables stop editor
    */
   enable() {
     this.#addEventListeners()
+    this.isDisabled = false
   }
   /**
-   * disables graph editor
+   * disables stop editor
    */
   disable() {
     this.#removeEventListeners()
+    this.isDisabled = true
   }
 
   /**
@@ -45,7 +46,10 @@ export default class StopEditor {
    */
   display() {
     if (this.intent) {
-      this.intent.draw(this.ctx)
+      this.intent.draw(this.ctx, {
+        width: 4,
+        color: 'blue',
+      })
     }
   }
   /**
@@ -62,9 +66,14 @@ export default class StopEditor {
       this.world.graph.segments,
       12 * this.viewport.zoom
     )
-
+    console.log('seg', seg)
     if (seg) {
-      this.intent = seg
+      const proj = seg.projectPoint(this.mouse)
+      if (proj.offset >= 0 && proj.offset <= 1) {
+        this.intent = proj.point
+      } else {
+        this.intent = null
+      }
     } else {
       this.intent = null
     }
