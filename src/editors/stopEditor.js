@@ -1,6 +1,7 @@
 import World from '../world.js'
 import Viewport from '../viewport.js'
 import { getNearestSegment } from '../math/utils.js'
+import StopSign from '../markings/stop.js'
 /**
  * stop editor
  */
@@ -66,11 +67,16 @@ export default class StopEditor {
       this.world.graph.segments,
       12 * this.viewport.zoom
     )
-    console.log('seg', seg)
     if (seg) {
       const proj = seg.projectPoint(this.mouse)
       if (proj.offset >= 0 && proj.offset <= 1) {
-        this.intent = proj.point
+        //New Stop marking
+        this.intent = new StopSign(
+          proj.point,
+          seg.directionVector(),
+          this.world.roadWidth,
+          this.world.roadWidth * 0.5
+        )
       } else {
         this.intent = null
       }
