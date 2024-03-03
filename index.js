@@ -56,8 +56,12 @@ function animate() {
 
   ctx.globalAlpha = 0.4
   // editors can be removes
-  graphEditor.display()
-  stopEditor.display()
+  if (!graphEditor.isDisabled) {
+    graphEditor.display()
+  }
+  if (!stopEditor.isDisabled) {
+    stopEditor.display()
+  }
   requestAnimationFrame(animate)
 }
 animate()
@@ -89,6 +93,7 @@ function disableAllEditors() {
   graphEditor.disable()
   stopBtnEl.style.backgroundColor = '#88888888'
   stopBtnEl.style.filter = 'grayscale(100%)'
+  stopEditor.disable()
 }
 
 /**
@@ -100,15 +105,16 @@ function setMode(mode = 'graph') {
   disableAllEditors()
   switch (mode) {
     case 'graph':
-      console.log('graph')
+      console.log('graph editor')
       graphBtnEl.style.backgroundColor = 'rgba(34, 170, 86, 0.336)'
       graphBtnEl.style.filter = ''
       graphEditor.enable()
       break
     case 'stop':
-      console.log('graph')
+      console.log('stop editor')
       stopBtnEl.style.backgroundColor = 'rgba(34, 170, 86, 0.336)'
       stopBtnEl.style.filter = ''
+      stopEditor.enable()
       break
   }
 }
