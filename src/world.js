@@ -137,6 +137,24 @@ export default class World {
   }
 
   /**
+   * generate a line guide in lanes
+   * @returns {Segment[]} the guides
+   */
+  #generateLaneGuides() {
+    const tmpEnvelopes = []
+    //loop through all the graph segments
+    for (let seg of this.graph.segments) {
+      const envelope = new Envelope(seg, {
+        width: this.roadWidth / 2,
+        roundness: this.roadRoundness,
+      })
+      tmpEnvelopes.push(envelope)
+    }
+    let guides = Polygon.union(tmpEnvelopes.map((env) => env.poly)) //unionize all the lane guide poly and return as segment
+    return guides
+  }
+
+  /**
    * Generate trees while the max as not be reached
    * @param {number} maxTries maximum number of tries to place a tree default 100
    * @return {Tree[]} returns array of trees
@@ -235,6 +253,10 @@ export default class World {
     }
     this.buildings = this.#generateBuildings()
     this.trees = this.#generateTrees()
+    // empty any previous generations of the lane guides
+    this.laneGuides.length = 0
+    //generate the lane guides
+    this.laneGuides.push(...this.#generateLaneGuides())
   }
   /**
    * draw function
@@ -266,6 +288,11 @@ export default class World {
     // trees and building and other items rendering
     for (let item of items) {
       item.draw(ctx, viewPoint)
+    }
+
+    // test lane guides
+    for (let laneGuide of this.laneGuides) {
+      laneGuide.draw(ctx, { color: 'red', width: 2 })
     }
   }
   /**

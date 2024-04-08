@@ -64,7 +64,7 @@ export default class StopEditor {
     this.mouse = this.viewport.getMousePointPos(e, true)
     const seg = getNearestSegment(
       this.mouse,
-      this.world.graph.segments,
+      this.world.laneGuides,
       12 * this.viewport.zoom
     )
     if (seg) {
